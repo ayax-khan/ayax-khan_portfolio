@@ -2,15 +2,12 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { ThemeToggle } from '@/components/layout/ThemeToggle'
 import {
-  IconBriefcase,
   IconDashboard,
   IconFileText,
   IconFolder,
-  IconGraduationCap,
-  IconLink,
   IconMail,
   IconSettings,
   IconSparkles,
@@ -27,15 +24,9 @@ const coreNav: NavItem[] = [
   { href: '/admin', label: 'Dashboard', icon: IconDashboard },
   { href: '/admin/projects', label: 'Projects', icon: IconFolder },
   { href: '/admin/blog', label: 'Blog', icon: IconFileText },
+  { href: '/admin/analytics', label: 'Analytics', icon: IconSparkles },
   { href: '/admin/messages', label: 'Messages', icon: IconMail },
-]
-
-const profileNav: NavItem[] = [
   { href: '/admin/profile', label: 'Profile', icon: IconUser },
-  { href: '/admin/skills', label: 'Skills', icon: IconSparkles },
-  { href: '/admin/experience', label: 'Experience', icon: IconBriefcase },
-  { href: '/admin/education', label: 'Education', icon: IconGraduationCap },
-  { href: '/admin/social', label: 'Social Links', icon: IconLink },
 ]
 
 const systemNav: NavItem[] = [{ href: '/admin/settings', label: 'Settings', icon: IconSettings }]
@@ -63,9 +54,7 @@ function Item({ item, active }: { item: NavItem; active: boolean }) {
 export function AdminSidebar() {
   const pathname = usePathname()
 
-  const inProfileSection = useMemo(() => pathname?.startsWith('/admin/profile') || pathname?.startsWith('/admin/skills') || pathname?.startsWith('/admin/experience') || pathname?.startsWith('/admin/education') || pathname?.startsWith('/admin/social'), [pathname])
-
-  const [profileOpen, setProfileOpen] = useState<boolean>(inProfileSection)
+  const inProfileSection = useMemo(() => pathname?.startsWith('/admin/profile'), [pathname])
 
   return (
     <aside className="group sticky top-0 h-screen w-14 shrink-0 overflow-hidden border-r border-[color:var(--border)] bg-[color:var(--surface)] transition-[width] duration-300 ease-out will-change-[width] hover:w-56">
@@ -83,32 +72,8 @@ export function AdminSidebar() {
         <div className="mt-2 flex-1 overflow-y-auto px-2 pb-2">
           <div className="space-y-0.5">
             {coreNav.map((i) => (
-              <Item key={i.href} item={i} active={pathname === i.href} />
+              <Item key={i.href} item={i} active={pathname === i.href || (i.href === '/admin/profile' && inProfileSection)} />
             ))}
-          </div>
-
-          <div className="mt-2">
-            <button
-              type="button"
-              onClick={() => setProfileOpen((v) => !v)}
-              className="flex w-full items-center justify-between rounded-xl px-2 py-2 text-left text-sm text-[color:var(--muted)] hover:bg-[color:var(--surface-2)] hover:text-[color:var(--fg)]"
-            >
-              <span className="hidden text-[11px] font-semibold uppercase tracking-wider group-hover:block">
-                Profile Management
-              </span>
-              <span className="grid h-9 w-9 place-items-center rounded-xl bg-[color:var(--surface-2)] text-[color:var(--fg)] group-hover:hidden">
-                <IconUser className="h-5 w-5" />
-              </span>
-              <span className="hidden text-xs group-hover:block">{profileOpen ? '▾' : '▸'}</span>
-            </button>
-
-            {profileOpen ? (
-              <div className="mt-1 space-y-0.5">
-                {profileNav.map((i) => (
-                  <Item key={i.href} item={i} active={pathname === i.href} />
-                ))}
-              </div>
-            ) : null}
           </div>
 
           <div className="mt-2 space-y-0.5">

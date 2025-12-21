@@ -28,10 +28,14 @@ export async function requestFingerprint() {
   const origin = h.get('origin')
   const host = h.get('host')
 
-  // Store only hashed IP to reduce sensitivity.
+  const ipHash = sha256Hex(ip)
+  const visitorId = sha256Hex(`${ipHash}:${ua}`)
+
+  // Store only hashed identifiers to reduce sensitivity.
   return {
     ip,
-    ipHash: sha256Hex(ip),
+    ipHash,
+    visitorId,
     userAgent: ua,
     origin,
     host,

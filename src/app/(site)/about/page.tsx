@@ -71,12 +71,12 @@ export default function AboutPage() {
         >
           <ul className="space-y-3">
             <li>
-              <p className="text-white">Role · Company</p>
+              <p className="text-[color:var(--fg)]">Role · Company</p>
               <p className="text-xs text-[color:var(--muted)]">2023 — Present</p>
               <p className="mt-1">Impact statement: shipped X, improved Y by Z%.</p>
             </li>
             <li>
-              <p className="text-white">Role · Company</p>
+              <p className="text-[color:var(--fg)]">Role · Company</p>
               <p className="text-xs text-[color:var(--muted)]">2021 — 2023</p>
               <p className="mt-1">Impact statement: reduced incidents, improved DX, etc.</p>
             </li>

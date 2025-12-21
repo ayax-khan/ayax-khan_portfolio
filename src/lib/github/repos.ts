@@ -18,6 +18,10 @@ export type PortfolioProject = {
   demoUrl: string | null
   featured: boolean
   visible: boolean
+  tags: string[]
+  sortOrder: number | null
+  isFork: boolean
+  archived: boolean
 }
 
 const REPOS_TTL_SECONDS = 60 * 20
@@ -27,7 +31,12 @@ function argsHashFrom(parts: unknown): string {
   return Buffer.from(JSON.stringify(parts)).toString('base64url')
 }
 
-export async function getProjectsFromGithub(): Promise<PortfolioProject[]> {
+export async function getProjectsFromGithub(options?: {
+  includeHidden?: boolean
+  includeForks?: boolean
+  includeArchived?: boolean
+  overrides?: Awaited<ReturnType<typeof prisma.projectOverride.findMany>>
+}): Promise<PortfolioProject[]> {
   // Allow `next build` without env vars; production requires them.
   if (!process.env.GITHUB_USERNAME || !process.env.GITHUB_TOKEN) return []
 
@@ -38,7 +47,7 @@ export async function getProjectsFromGithub(): Promise<PortfolioProject[]> {
 
   const cached = await getGithubCache({ owner, repo, kind, argsHash })
   if (cached && isFresh(cached.expiresAt)) {
-    return mapReposToProjects(Array.isArray(cached.body) ? (cached.body as unknown as GithubRepo[]) : [])
+    return mapReposToProjects(Array.isArray(cached.body) ? (cached.body as unknown as GithubRepo[]) : [], options)
   }
 
   const result = await githubFetchJson<GithubRepo[]>(
@@ -56,7 +65,7 @@ export async function getProjectsFromGithub(): Promise<PortfolioProject[]> {
       body: cached.body,
       expiresAt: result.expiresAt,
     })
-    return mapReposToProjects(Array.isArray(cached.body) ? (cached.body as unknown as GithubRepo[]) : [])
+    return mapReposToProjects(Array.isArray(cached.body) ? (cached.body as unknown as GithubRepo[]) : [], options)
   }
 
   if (result.status !== 'fresh') {
@@ -64,15 +73,34 @@ export async function getProjectsFromGithub(): Promise<PortfolioProject[]> {
   }
 
   await setGithubCache({ owner, repo, kind, argsHash, etag: result.etag, body: result.data, expiresAt: result.expiresAt })
-  return mapReposToProjects(result.data)
+  return mapReposToProjects(result.data, options)
 }
 
-async function mapReposToProjects(repos: GithubRepo[]): Promise<PortfolioProject[]> {
-  const overrides = await prisma.projectOverride.findMany()
+async function mapReposToProjects(
+  repos: GithubRepo[],
+  options?: {
+    includeHidden?: boolean
+    includeForks?: boolean
+    includeArchived?: boolean
+    overrides?: Awaited<ReturnType<typeof prisma.projectOverride.findMany>>
+  },
+): Promise<PortfolioProject[]> {
+  const overrides =
+    options?.overrides ??
+    (await (async () => {
+      try {
+        return await prisma.projectOverride.findMany()
+      } catch {
+        // If DB schema is behind (e.g. migration not applied yet), fall back to no overrides.
+        return []
+      }
+    })())
   const overrideMap = new Map(overrides.map((o) => [o.repoFullName, o]))
 
-  return repos
-    .filter((r) => !r.fork && !r.disabled)
+  const projects = repos
+    .filter((r) => !r.disabled)
+    .filter((r) => (options?.includeForks ? true : !r.fork))
+    .filter((r) => (options?.includeArchived ? true : !r.archived))
     .map((r) => {
       const o = overrideMap.get(r.full_name)
       const slug = r.name.toLowerCase()
@@ -89,8 +117,23 @@ async function mapReposToProjects(repos: GithubRepo[]): Promise<PortfolioProject
         demoUrl: o?.demoUrl ?? r.homepage,
         featured: o?.featured ?? false,
         visible: o?.visible ?? true,
+        tags: o?.tags ?? [],
+        sortOrder: o?.sortOrder ?? null,
+        isFork: r.fork,
+        archived: r.archived,
       }
     })
-    .filter((p) => p.visible)
-    .sort((a, b) => Number(b.featured) - Number(a.featured) || b.updatedAt.localeCompare(a.updatedAt))
+
+  const visibleProjects = options?.includeHidden ? projects : projects.filter((p) => p.visible)
+
+  return visibleProjects
+    .sort((a, b) => {
+      // sortOrder asc (smaller first) when present
+      const ao = a.sortOrder
+      const bo = b.sortOrder
+      if (ao != null && bo != null && ao !== bo) return ao - bo
+      if (ao == null && bo != null) return 1
+      if (ao != null && bo == null) return -1
+      return Number(b.featured) - Number(a.featured) || b.updatedAt.localeCompare(a.updatedAt)
+    })
 }

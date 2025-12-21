@@ -51,7 +51,7 @@ export default async function BlogIndexPage() {
             >
               <p>{p.summary ?? '—'}</p>
               <p className="mt-3 text-xs text-[color:var(--muted)]">
-                {p.publishedAt ? new Date(p.publishedAt).toLocaleDateString() : 'Draft'}
+                {p.publishedAt ? new Date(p.publishedAt).toISOString().slice(0, 10) : 'Draft'}
                 {p.tags.length ? ` · ${p.tags.join(', ')}` : ''}
               </p>
             </Card>

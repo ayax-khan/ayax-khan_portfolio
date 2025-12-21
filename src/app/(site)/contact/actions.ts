@@ -68,5 +68,19 @@ export async function submitContact(
     },
   })
 
+  // Analytics: record contact submission
+  try {
+    await prisma.analyticsEvent.create({
+      data: {
+        type: 'CLICK',
+        path: '/contact',
+        referrer: fp.origin ?? null,
+        meta: { kind: 'contact_submit', visitorId: fp.visitorId },
+      },
+    })
+  } catch {
+    // ignore analytics errors
+  }
+
   return { status: 'success' }
 }

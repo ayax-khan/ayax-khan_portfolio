@@ -1,7 +1,7 @@
 import Link from 'next/link'
 
 import { site } from '@/lib/site'
-import { ThemeToggle } from '@/components/layout/ThemeToggle'
+import { ThemeToggle3D } from '@/components/layout/ThemeToggle3D'
 
 export function SiteHeader() {
   return (
@@ -16,9 +16,7 @@ export function SiteHeader() {
               {i.label}
             </Link>
           ))}
-          <div className="hidden sm:block">
-            <ThemeToggle />
-          </div>
+          <ThemeToggle3D />
         </nav>
       </div>
     </header>

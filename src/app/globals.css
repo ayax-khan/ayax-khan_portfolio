@@ -2,20 +2,20 @@
 
 /*
   Theme system:
-  - default: dark
-  - supported: dark | light | navy
+  - supported: light | navy
+  - default: light
 
   We keep typography scale as-is; only colors change.
 */
 
 :root {
-  --bg: #0a0a0a;
-  --fg: #ededed;
-  --muted: rgba(237, 237, 237, 0.7);
-  --border: rgba(237, 237, 237, 0.12);
-  --surface: rgba(237, 237, 237, 0.06);
-  --surface-2: rgba(237, 237, 237, 0.10);
-  --selection: rgba(237, 237, 237, 0.18);
+  --bg: #ffffff;
+  --fg: #0f172a;
+  --muted: rgba(15, 23, 42, 0.65);
+  --border: rgba(15, 23, 42, 0.12);
+  --surface: rgba(15, 23, 42, 0.04);
+  --surface-2: rgba(15, 23, 42, 0.06);
+  --selection: rgba(37, 99, 235, 0.18);
 }
 
 :root[data-theme='light'] {
@@ -26,16 +26,6 @@
   --surface: rgba(15, 23, 42, 0.04);
   --surface-2: rgba(15, 23, 42, 0.06);
   --selection: rgba(37, 99, 235, 0.18);
-}
-
-:root[data-theme='dark'] {
-  --bg: #0a0a0a;
-  --fg: #ededed;
-  --muted: rgba(237, 237, 237, 0.7);
-  --border: rgba(237, 237, 237, 0.12);
-  --surface: rgba(237, 237, 237, 0.06);
-  --surface-2: rgba(237, 237, 237, 0.10);
-  --selection: rgba(237, 237, 237, 0.18);
 }
 
 :root[data-theme='navy'] {
@@ -57,4 +47,317 @@ body {
   background: var(--bg);
   color: var(--fg);
   font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+}
+
+/* Theme toggle (ship + water) */
+.theme-toggle {
+  /* Sky palette */
+  --sky-top: rgba(186, 230, 253, 0.55);
+  --sky-mid: rgba(147, 197, 253, 0.35);
+  --sky-haze: rgba(255, 255, 255, 0.18);
+
+  /* Wave palette (theme-tuned below) */
+  --water-deep: rgba(37, 99, 235, 0.26);
+  --water-mid: rgba(59, 130, 246, 0.22);
+  --water-foam: rgba(255, 255, 255, 0.22);
+  --water-glow: rgba(255, 255, 255, 0.08);
+}
+
+.theme-toggle__sky {
+  background:
+    radial-gradient(90px 36px at 25% 20%, var(--sky-haze), transparent 72%),
+    radial-gradient(100px 40px at 70% 28%, var(--sky-haze), transparent 74%),
+    linear-gradient(to bottom, var(--sky-top), var(--sky-mid));
+}
+
+/* Crisp horizon line between sky and water */
+.theme-toggle__waterline {
+  z-index: 25;
+  display: block;
+  height: 10px;
+  transform: translateY(-6px);
+  opacity: 1;
+  filter: none;
+  position: relative;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(255, 255, 255, 0.28),
+    rgba(255, 255, 255, 0.22),
+    transparent
+  );
+}
+
+/* Crest waves that sit right on the horizon line */
+.theme-toggle__waterline-wave {
+  position: absolute;
+  inset: 0;
+  /* Stronger, taller crests */
+  background:
+    radial-gradient(22px 12px at 18px 70%, rgba(255, 255, 255, 0.85), transparent 68%),
+    radial-gradient(22px 12px at 62px 70%, rgba(255, 255, 255, 0.7), transparent 68%),
+    radial-gradient(22px 12px at 106px 70%, rgba(255, 255, 255, 0.8), transparent 68%);
+  background-size: 140px 100%;
+  background-repeat: repeat-x;
+  opacity: 0.95;
+  animation: themeToggleCrest 1.7s linear infinite, themeToggleCrestBob 1.1s ease-in-out infinite;
+}
+
+.theme-toggle--night .theme-toggle__waterline-wave {
+  background:
+    radial-gradient(22px 12px at 18px 70%, rgba(231, 238, 252, 0.58), transparent 68%),
+    radial-gradient(22px 12px at 62px 70%, rgba(231, 238, 252, 0.48), transparent 68%),
+    radial-gradient(22px 12px at 106px 70%, rgba(231, 238, 252, 0.52), transparent 68%);
+  opacity: 0.95;
+}
+
+.theme-toggle--night .theme-toggle__waterline {
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(231, 238, 252, 0.25),
+    rgba(231, 238, 252, 0.18),
+    transparent
+  );
+  opacity: 0.9;
+}
+
+.theme-toggle--night .theme-toggle__sky {
+  background:
+    radial-gradient(120px 60px at 25% 25%, rgba(56, 189, 248, 0.12), transparent 70%),
+    radial-gradient(140px 70px at 70% 30%, rgba(96, 165, 250, 0.10), transparent 72%),
+    linear-gradient(to bottom, rgba(2, 6, 23, 0.65), rgba(30, 58, 138, 0.26));
+}
+
+.theme-toggle--night .theme-toggle__sky::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(1px 1px at 18% 20%, rgba(231, 238, 252, 0.65), transparent 70%),
+    radial-gradient(1px 1px at 32% 14%, rgba(231, 238, 252, 0.55), transparent 70%),
+    radial-gradient(1px 1px at 62% 18%, rgba(231, 238, 252, 0.55), transparent 70%),
+    radial-gradient(1px 1px at 78% 26%, rgba(231, 238, 252, 0.5), transparent 70%),
+    radial-gradient(1px 1px at 86% 12%, rgba(231, 238, 252, 0.45), transparent 70%);
+  opacity: 0.7;
+}
+
+:root[data-theme='navy'] .theme-toggle {
+  --water-deep: rgba(2, 132, 199, 0.22);
+  --water-mid: rgba(56, 189, 248, 0.18);
+  --water-foam: rgba(231, 238, 252, 0.18);
+  --water-glow: rgba(231, 238, 252, 0.08);
+}
+
+.theme-toggle__water {
+  position: relative;
+  overflow: hidden;
+}
+
+/* base water gradient */
+.theme-toggle__water::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to bottom, rgba(255, 255, 255, 0), var(--water-glow)),
+    radial-gradient(120px 24px at 25% 70%, var(--water-mid), transparent 72%),
+    radial-gradient(140px 24px at 70% 78%, var(--water-deep), transparent 75%);
+  opacity: 0.9;
+}
+
+.theme-toggle__wave {
+  position: absolute;
+  left: -20%;
+  right: -20%;
+  /* Waves sit on the waterline (top edge of the bottom-half water container) */
+  top: -10px;
+  bottom: auto;
+  height: 80%;
+  background:
+    radial-gradient(22px 14px at 22px 18px, var(--water-foam), transparent 70%),
+    radial-gradient(22px 14px at 62px 24px, var(--water-foam), transparent 70%),
+    radial-gradient(22px 14px at 102px 16px, var(--water-foam), transparent 70%),
+    linear-gradient(to top, var(--water-deep), transparent 70%);
+  opacity: 0.55;
+  filter: blur(0.2px);
+  transform: translateZ(0);
+  background-size: 120px 40px;
+  background-repeat: repeat;
+}
+
+.theme-toggle__wave--back {
+  top: -12px;
+  opacity: 0.20;
+  animation: themeToggleDriftBack 4.6s linear infinite;
+}
+
+.theme-toggle__wave--mid {
+  top: -10px;
+  opacity: 0.30;
+  animation: themeToggleDriftMid 3.6s linear infinite;
+}
+
+.theme-toggle__wave--front {
+  top: -8px;
+  opacity: 0.46;
+  animation: themeToggleDriftFront 2.8s linear infinite;
+}
+
+/* Bubble burst on click (keyed element in React re-mounts each click) */
+.theme-toggle__bubbles {
+  position: absolute;
+  inset: 0;
+  /* Keep bubbles near the surface */
+  transform: translateY(-6px);
+  pointer-events: none;
+  opacity: 0;
+  background:
+    radial-gradient(5px 5px at 20% 75%, rgba(255, 255, 255, 0.5), transparent 70%),
+    radial-gradient(4px 4px at 30% 82%, rgba(255, 255, 255, 0.45), transparent 70%),
+    radial-gradient(6px 6px at 50% 78%, rgba(255, 255, 255, 0.4), transparent 70%),
+    radial-gradient(4px 4px at 70% 84%, rgba(255, 255, 255, 0.45), transparent 70%),
+    radial-gradient(5px 5px at 82% 76%, rgba(255, 255, 255, 0.5), transparent 70%);
+  animation: themeToggleBubbles 700ms ease-out;
+}
+
+.theme-toggle__ship-bob {
+  animation: themeToggleBob 1.9s ease-in-out infinite;
+}
+
+/* Short tilt/accelerate burst when toggling (ship wrapper is keyed) */
+.theme-toggle__ship-tilt {
+  transform-origin: 50% 70%;
+  animation: themeToggleShipTilt 520ms ease-out;
+}
+
+/* Ripple/splash (keyed element) */
+.theme-toggle__ripple {
+  width: 22px;
+  height: 22px;
+  transform: translateY(2px);
+  opacity: 0;
+  border-radius: 999px;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.55), transparent 65%),
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.25), transparent 75%);
+  animation: themeToggleRipple 620ms ease-out;
+  filter: blur(0.1px);
+}
+
+@keyframes themeToggleCrest {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 280px 0;
+  }
+}
+
+@keyframes themeToggleCrestBob {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(1px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes themeToggleDriftBack {
+  0% {
+    background-position: 0 0;
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(1px);
+  }
+  100% {
+    background-position: 240px 0;
+    transform: translateY(0);
+  }
+}
+
+@keyframes themeToggleDriftMid {
+  0% {
+    background-position: 0 0;
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-1px);
+  }
+  100% {
+    background-position: 320px 0;
+    transform: translateY(0);
+  }
+}
+
+@keyframes themeToggleDriftFront {
+  0% {
+    background-position: 0 0;
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(1px);
+  }
+  100% {
+    background-position: 420px 0;
+    transform: translateY(0);
+  }
+}
+
+@keyframes themeToggleBubbles {
+  0% {
+    opacity: 0;
+    transform: translateY(6px);
+    filter: blur(0.2px);
+  }
+  15% {
+    opacity: 0.9;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-8px);
+    filter: blur(0.6px);
+  }
+}
+
+@keyframes themeToggleRipple {
+  0% {
+    opacity: 0;
+    transform: translateY(4px) scale(0.7);
+  }
+  18% {
+    opacity: 0.85;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(0) scale(1.45);
+  }
+}
+
+@keyframes themeToggleShipTilt {
+  0% {
+    transform: translateX(0) rotate(0deg);
+  }
+  35% {
+    transform: translateX(2px) rotate(-10deg);
+  }
+  100% {
+    transform: translateX(0) rotate(0deg);
+  }
+}
+
+@keyframes themeToggleBob {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-2px);
+  }
+  100% {
+    transform: translateY(0);
+  }
 }

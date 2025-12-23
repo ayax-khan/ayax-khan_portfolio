@@ -25,6 +25,43 @@ export async function saveProfile(input: unknown) {
   ])
 }
 
+const MAX_PROFILE_IMAGE_BYTES = 2 * 1024 * 1024 // 2MB
+const ALLOWED_PROFILE_IMAGE_MIMES = new Set(['image/png', 'image/jpeg', 'image/webp'])
+
+export async function uploadProfileImage(formData: FormData): Promise<{ url: string } | null> {
+  if (!process.env.DATABASE_URL) throw new Error('Database not configured')
+
+  const file = formData.get('profileImage')
+  if (!(file instanceof File)) return null
+  if (file.size === 0) return null
+  if (file.size > MAX_PROFILE_IMAGE_BYTES) {
+    throw new Error(`Profile image too large. Max size is ${MAX_PROFILE_IMAGE_BYTES} bytes.`)
+  }
+
+  const mime = (file.type || '').toLowerCase()
+  const name = (file.name || '').toLowerCase()
+
+  const ext = mime === 'image/png' || name.endsWith('.png') ? 'png' : mime === 'image/webp' || name.endsWith('.webp') ? 'webp' : 'jpg'
+  const resolvedMime = mime || (ext === 'png' ? 'image/png' : ext === 'webp' ? 'image/webp' : 'image/jpeg')
+
+  if (!ALLOWED_PROFILE_IMAGE_MIMES.has(resolvedMime)) {
+    throw new Error('Only PNG, JPG, or WEBP images are allowed.')
+  }
+
+  const dir = path.join(process.cwd(), 'public', 'uploads', 'profile')
+  await mkdir(dir, { recursive: true })
+
+  // Single active avatar file (overwrite) keeps things simple.
+  const fileName = `avatar.${ext}`
+  const url = `/uploads/profile/${fileName}`
+
+  const arrayBuffer = await file.arrayBuffer()
+  await writeFile(path.join(dir, fileName), Buffer.from(arrayBuffer))
+
+  await setSetting('profile.imageUrl', url)
+  return { url }
+}
+
 const MAX_RESUME_BYTES = 8 * 1024 * 1024 // 8MB
 
 export type ResumeEntry = {

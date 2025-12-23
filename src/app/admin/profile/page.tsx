@@ -17,6 +17,7 @@ import {
   setActiveResume,
   updateEducationEntry,
   updateExperienceEntry,
+  uploadProfileImage,
   uploadResumes,
 } from './actions'
 import { ProfileTabNav } from './TabNav'
@@ -146,14 +147,58 @@ export default async function AdminProfilePage({
               />
             </div>
 
-            <div>
-              <label className="block text-sm text-[color:var(--muted)]">Profile image URL</label>
-              <input
-                name="profileImageUrl"
-                defaultValue={imageUrl ?? ''}
-                placeholder="https://..."
-                className="mt-1 w-full rounded-xl border border-[color:var(--border)] bg-[color:var(--surface-2)] px-3 py-2 text-[color:var(--fg)] outline-none focus:ring-2 focus:ring-[color:var(--selection)]"
-              />
+            <div className="space-y-3">
+              <div>
+                <label className="block text-sm text-[color:var(--muted)]">Profile image</label>
+                <p className="mt-1 text-xs text-[color:var(--muted)]">Upload PNG/JPG/WEBP (max 2MB) or paste a URL.</p>
+              </div>
+
+              {imageUrl ? (
+                <div className="flex items-center gap-3">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={imageUrl}
+                    alt="Profile"
+                    className="h-12 w-12 rounded-full border border-[color:var(--border)] object-cover"
+                  />
+                  <div className="min-w-0">
+                    <p className="text-sm font-semibold text-[color:var(--fg)]">Current</p>
+                    <p className="truncate text-xs text-[color:var(--muted)]">{imageUrl}</p>
+                  </div>
+                </div>
+              ) : null}
+
+              <form
+                action={async (fd) => {
+                  'use server'
+                  await uploadProfileImage(fd)
+                  redirect('/admin/profile')
+                }}
+                className="flex flex-wrap items-center gap-3"
+              >
+                <input
+                  type="file"
+                  name="profileImage"
+                  accept="image/png,image/jpeg,image/webp,.png,.jpg,.jpeg,.webp"
+                  className="block w-full max-w-sm text-sm text-[color:var(--muted)] file:mr-4 file:rounded-xl file:border-0 file:bg-[color:var(--surface-2)] file:px-4 file:py-2 file:text-sm file:font-semibold file:text-[color:var(--fg)]"
+                />
+                <button
+                  type="submit"
+                  className="rounded-xl bg-[color:var(--fg)] px-4 py-2 text-sm font-semibold text-[color:var(--bg)] hover:opacity-90"
+                >
+                  Upload
+                </button>
+              </form>
+
+              <div>
+                <label className="block text-sm text-[color:var(--muted)]">Profile image URL</label>
+                <input
+                  name="profileImageUrl"
+                  defaultValue={imageUrl ?? ''}
+                  placeholder="https://..."
+                  className="mt-1 w-full rounded-xl border border-[color:var(--border)] bg-[color:var(--surface-2)] px-3 py-2 text-[color:var(--fg)] outline-none focus:ring-2 focus:ring-[color:var(--selection)]"
+                />
+              </div>
             </div>
 
             <button

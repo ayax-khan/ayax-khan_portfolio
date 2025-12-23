@@ -18,6 +18,7 @@ const UpdateOverrideSchema = z.object({
   visible: z.boolean().optional(),
   featured: z.boolean().optional(),
   demoUrl: z.string().url().nullable().optional(),
+  thumbnailUrl: z.string().url().nullable().optional(),
   customTitle: z.string().min(1).max(120).nullable().optional(),
   customSummary: z.string().min(1).max(500).nullable().optional(),
   tags: z.array(z.string().min(1).max(30)).max(20).optional(),
@@ -32,22 +33,56 @@ export async function updateProjectOverride(input: unknown) {
 
   const { repoFullName, ...data } = parsed.data
 
-  await prisma.projectOverride.upsert({
-    where: { repoFullName },
-    create: {
-      repoFullName,
-      visible: data.visible ?? true,
-      featured: data.featured ?? false,
-      demoUrl: data.demoUrl ?? null,
-      customTitle: data.customTitle ?? null,
-      customSummary: data.customSummary ?? null,
-      tags: data.tags ?? [],
-      sortOrder: data.sortOrder ?? null,
-    },
-    update: {
-      ...data,
-    },
-  })
+  const upsertWithThumbnail = () =>
+    prisma.projectOverride.upsert({
+      where: { repoFullName },
+      create: {
+        repoFullName,
+        visible: data.visible ?? true,
+        featured: data.featured ?? false,
+        demoUrl: data.demoUrl ?? null,
+        thumbnailUrl: data.thumbnailUrl ?? null,
+        customTitle: data.customTitle ?? null,
+        customSummary: data.customSummary ?? null,
+        tags: data.tags ?? [],
+        sortOrder: data.sortOrder ?? null,
+      },
+      update: {
+        ...data,
+      },
+    })
+
+  const upsertWithoutThumbnail = () => {
+    const { thumbnailUrl: _thumb, ...rest } = data
+    return prisma.projectOverride.upsert({
+      where: { repoFullName },
+      create: {
+        repoFullName,
+        visible: rest.visible ?? true,
+        featured: rest.featured ?? false,
+        demoUrl: rest.demoUrl ?? null,
+        customTitle: rest.customTitle ?? null,
+        customSummary: rest.customSummary ?? null,
+        tags: rest.tags ?? [],
+        sortOrder: rest.sortOrder ?? null,
+      },
+      update: {
+        ...rest,
+      },
+    })
+  }
+
+  try {
+    await upsertWithThumbnail()
+  } catch (err: unknown) {
+    // If DB schema is behind (thumbnailUrl column missing), allow saving other fields.
+    const message = err instanceof Error ? err.message : String(err)
+    if (/thumbnailUrl/i.test(message) && /(does not exist|unknown column|no such column)/i.test(message)) {
+      await upsertWithoutThumbnail()
+      return
+    }
+    throw err
+  }
 }
 
 export async function resetProjectOverride(repoFullName: string) {
@@ -106,6 +141,7 @@ export async function updateProjectOverrideFromForm(formData: FormData) {
   const visible = formData.get('visible') === 'on'
   const featured = formData.get('featured') === 'on'
   const demoUrlRaw = String(formData.get('demoUrl') ?? '').trim()
+  const thumbnailUrlRaw = String(formData.get('thumbnailUrl') ?? '').trim()
   const customTitleRaw = String(formData.get('customTitle') ?? '').trim()
   const customSummaryRaw = String(formData.get('customSummary') ?? '').trim()
   const sortOrderRaw = String(formData.get('sortOrder') ?? '').trim()
@@ -116,6 +152,7 @@ export async function updateProjectOverrideFromForm(formData: FormData) {
     visible,
     featured,
     demoUrl: demoUrlRaw ? demoUrlRaw : null,
+    thumbnailUrl: thumbnailUrlRaw ? thumbnailUrlRaw : null,
     customTitle: customTitleRaw ? customTitleRaw : null,
     customSummary: customSummaryRaw ? customSummaryRaw : null,
     tags: tagsRaw ? parseTags(tagsRaw) : [],

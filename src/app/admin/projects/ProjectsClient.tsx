@@ -18,6 +18,7 @@ type ProjectRow = {
   visible: boolean
   featured: boolean
   demoUrl: string | null
+  thumbnailUrl: string | null
   customTitle: string | null
   customSummary: string | null
   tags: string[]
@@ -105,7 +106,7 @@ export function ProjectsClient({ projects, onUpdate, onReset, onSaveOrder, onSyn
       if (!showArchived && p.archived) return false
       if (language !== 'all' && (p.language ?? 'Unknown') !== language) return false
       if (!q) return true
-      const hay = `${p.fullName} ${p.customTitle ?? p.repoName} ${p.customSummary ?? ''} ${(p.tags ?? []).join(' ')}`.toLowerCase()
+      const hay = `${p.fullName} ${p.customTitle ?? p.repoName} ${p.customSummary ?? ''} ${(p.tags ?? []).join(' ')} ${p.thumbnailUrl ?? ''}`.toLowerCase()
       return hay.includes(q)
     })
   }, [ordered, query, filter, language, showForks, showArchived])
@@ -301,6 +302,29 @@ export function ProjectsClient({ projects, onUpdate, onReset, onSaveOrder, onSyn
                         placeholder="https://..."
                         className="mt-1 w-full rounded-xl border border-[color:var(--border)] bg-[color:var(--surface-2)] px-3 py-2 text-[color:var(--fg)] outline-none focus:ring-2 focus:ring-[color:var(--selection)]"
                       />
+                    </div>
+
+                    <div className="md:col-span-2">
+                      <label className="block text-sm text-[color:var(--muted)]">Thumbnail URL</label>
+                      <div className="mt-1 flex flex-wrap items-center gap-3">
+                        <input
+                          name="thumbnailUrl"
+                          defaultValue={p.thumbnailUrl ?? ''}
+                          placeholder="https://..."
+                          className="w-full flex-1 rounded-xl border border-[color:var(--border)] bg-[color:var(--surface-2)] px-3 py-2 text-[color:var(--fg)] outline-none focus:ring-2 focus:ring-[color:var(--selection)]"
+                        />
+                        {p.thumbnailUrl ? (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img
+                            src={p.thumbnailUrl}
+                            alt="Thumbnail preview"
+                            className="h-10 w-16 rounded-lg border border-[color:var(--border)] object-cover"
+                          />
+                        ) : null}
+                      </div>
+                      <p className="mt-1 text-xs text-[color:var(--muted)]">
+                        Used on the homepage rotating stacks. If empty, a GitHub OpenGraph image is used.
+                      </p>
                     </div>
 
                     <div className="md:col-span-2">

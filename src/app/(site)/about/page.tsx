@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { Card } from '@/components/ui/Card'
 import { Badge } from '@/components/ui/Badge'
 import { SectionHeading } from '@/components/ui/SectionHeading'
-import { site, socialLinks } from '@/lib/site'
+import { getPublicProfile, publicSocialLinks } from '@/lib/publicProfile'
 
 export const metadata = {
   title: 'About',
@@ -20,16 +20,19 @@ const skills = [
   'Performance',
 ] as const
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const profile = await getPublicProfile()
+  const links = publicSocialLinks(profile)
+
   return (
     <div className="space-y-10">
       <header className="space-y-3">
         <h1 className="text-2xl font-semibold">About</h1>
         <p className="max-w-2xl text-[color:var(--muted)]">
-          I’m {site.name}. I enjoy building products that are secure by default, fast in production, and easy to evolve.
+          I’m {profile.name}. {profile.bio}
         </p>
         <div className="flex flex-wrap gap-2">
-          {socialLinks().map((l) => (
+          {links.map((l) => (
             <Link key={l.href} href={l.href} target="_blank" rel="noreferrer" className="text-sm text-[color:var(--muted)] hover:text-[color:var(--fg)]">
               {l.label}
             </Link>

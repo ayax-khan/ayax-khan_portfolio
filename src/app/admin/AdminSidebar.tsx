@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useMemo } from 'react'
 import { ThemeToggle } from '@/components/layout/ThemeToggle'
+import { ThemeIndicator } from '@/components/layout/ThemeIndicator'
 import {
   IconDashboard,
   IconFileText,
@@ -43,8 +44,8 @@ function Item({ item, active }: { item: NavItem; active: boolean }) {
           : 'text-[color:var(--muted)] hover:bg-[color:var(--surface-2)] hover:text-[color:var(--fg)]')
       }
     >
-      <span className="grid h-9 w-9 place-items-center rounded-xl bg-[color:var(--surface-2)] text-[color:var(--fg)]">
-        <Icon className="h-5 w-5" />
+      <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-[color:var(--surface-2)] text-[color:var(--fg)]">
+        <Icon className="h-5 w-5 shrink-0" />
       </span>
       <span className="hidden whitespace-nowrap group-hover:block">{item.label}</span>
     </Link>
@@ -85,8 +86,15 @@ export function AdminSidebar() {
 
         <div className="border-t border-[color:var(--border)] p-3">
           <div className="flex items-center justify-between gap-2">
-            <span className="hidden text-xs text-[color:var(--muted)] group-hover:block">Theme</span>
-            <ThemeToggle compact />
+            {/* Collapsed state: show current theme icon */}
+            <span className="admin-theme-indicator grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-[color:var(--surface-2)] group-hover:hidden">
+              <ThemeIndicator />
+            </span>
+
+            {/* Expanded (hover): show full toggle */}
+            <div className="hidden group-hover:block">
+              <ThemeToggle compact />
+            </div>
           </div>
         </div>
       </div>

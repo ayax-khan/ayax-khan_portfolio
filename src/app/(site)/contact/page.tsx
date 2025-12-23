@@ -1,14 +1,17 @@
 import { ContactForm } from './ContactForm'
 import { Card } from '@/components/ui/Card'
 import { LinkButton } from '@/components/ui/LinkButton'
-import { site, socialLinks } from '@/lib/site'
+import { getPublicProfile, publicSocialLinks } from '@/lib/publicProfile'
 
 export const metadata = {
   title: 'Contact',
   description: 'Send a message or reach out via email/social links.',
 }
 
-export default function ContactPage() {
+export default async function ContactPage() {
+  const profile = await getPublicProfile()
+  const links = publicSocialLinks(profile)
+
   return (
     <div className="space-y-8">
       <header className="space-y-2">
@@ -28,8 +31,8 @@ export default function ContactPage() {
             If you prefer, you can also reach me via email or social profiles.
           </p>
           <div className="mt-4 flex flex-wrap gap-2">
-            {site.email ? <LinkButton href={`mailto:${site.email}`} variant="secondary">Email</LinkButton> : null}
-            {socialLinks().map((l) => (
+            {profile.email ? <LinkButton href={`mailto:${profile.email}`} variant="secondary">Email</LinkButton> : null}
+            {links.map((l) => (
               <LinkButton key={l.href} href={l.href} variant="ghost" target="_blank" rel="noreferrer">
                 {l.label}
               </LinkButton>

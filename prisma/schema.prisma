@@ -65,6 +65,7 @@ model ProjectOverride {
   visible       Boolean  @default(true)
   featured      Boolean  @default(false)
   demoUrl       String?
+  thumbnailUrl  String?
   customTitle   String?
   customSummary String?
   tags          String[]

@@ -5,13 +5,17 @@
   "scripts": {
     "dev": "next dev",
     "dev:clean": "node -e \"const fs=require('fs'); fs.rmSync('.next',{recursive:true,force:true}); console.log('Deleted .next cache');\"", 
+    "prebuild": "node -e \"const {spawnSync}=require('child_process'); const r=spawnSync('pnpm',['-s','prisma:generate'],{stdio:'inherit',shell:true}); if(r.status!==0){ console.warn('Warning: prisma generate failed (often due to Windows file lock). Continuing build.'); process.exit(0);}\"",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
-    "prisma:studio": "prisma studio"
+    "prisma:migrate:deploy": "prisma migrate deploy",
+    "prisma:push": "prisma db push",
+    "prisma:studio": "prisma studio",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@prisma/client": "^6.19.1",
@@ -24,7 +28,6 @@
     "react-dom": "19.2.3",
     "react-markdown": "^10.1.0",
     "remark-gfm": "^4.0.1",
-    "three": "^0.179.1",
     "zod": "^4.2.1"
   },
   "devDependencies": {
@@ -33,7 +36,6 @@
     "@types/pg": "^8.16.0",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "@types/three": "^0.179.0",
     "eslint": "^9",
     "eslint-config-next": "16.1.0",
     "pg": "^8.16.3",

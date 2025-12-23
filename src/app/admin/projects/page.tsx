@@ -55,6 +55,7 @@ export default async function AdminProjectsPage() {
       visible: o?.visible ?? true,
       featured: o?.featured ?? false,
       demoUrl: o?.demoUrl ?? p.demoUrl,
+      thumbnailUrl: (o as any)?.thumbnailUrl ?? p.thumbnailUrl,
       customTitle: o?.customTitle ?? null,
       customSummary: o?.customSummary ?? (p.description ?? null),
       tags: o?.tags ?? [],

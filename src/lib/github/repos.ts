@@ -16,6 +16,7 @@ export type PortfolioProject = {
   updatedAt: string
   repoUrl: string
   demoUrl: string | null
+  thumbnailUrl: string | null
   featured: boolean
   visible: boolean
   tags: string[]
@@ -105,6 +106,8 @@ async function mapReposToProjects(
       const o = overrideMap.get(r.full_name)
       const slug = r.name.toLowerCase()
 
+      const ogImage = `https://opengraph.githubassets.com/1/${r.full_name}`
+
       return {
         slug,
         name: o?.customTitle ?? r.name,
@@ -115,6 +118,7 @@ async function mapReposToProjects(
         updatedAt: r.pushed_at,
         repoUrl: r.html_url,
         demoUrl: o?.demoUrl ?? r.homepage,
+        thumbnailUrl: (o as any)?.thumbnailUrl ?? ogImage,
         featured: o?.featured ?? false,
         visible: o?.visible ?? true,
         tags: o?.tags ?? [],

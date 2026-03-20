@@ -150,7 +150,7 @@ export default async function AdminProfilePage({
             <div className="space-y-3">
               <div>
                 <label className="block text-sm text-[color:var(--muted)]">Profile image</label>
-                <p className="mt-1 text-xs text-[color:var(--muted)]">Upload PNG/JPG/WEBP (max 2MB) or paste a URL.</p>
+                <p className="mt-1 text-xs text-[color:var(--muted)]">Upload PNG/JPG/WEBP (max 2MB) or paste a URL below.</p>
               </div>
 
               {imageUrl ? (
@@ -167,47 +167,73 @@ export default async function AdminProfilePage({
                   </div>
                 </div>
               ) : null}
-
-              <form
-                action={async (fd) => {
-                  'use server'
-                  await uploadProfileImage(fd)
-                  redirect('/admin/profile')
-                }}
-                className="flex flex-wrap items-center gap-3"
-              >
-                <input
-                  type="file"
-                  name="profileImage"
-                  accept="image/png,image/jpeg,image/webp,.png,.jpg,.jpeg,.webp"
-                  className="block w-full max-w-sm text-sm text-[color:var(--muted)] file:mr-4 file:rounded-xl file:border-0 file:bg-[color:var(--surface-2)] file:px-4 file:py-2 file:text-sm file:font-semibold file:text-[color:var(--fg)]"
-                />
-                <button
-                  type="submit"
-                  className="rounded-xl bg-[color:var(--fg)] px-4 py-2 text-sm font-semibold text-[color:var(--bg)] hover:opacity-90"
-                >
-                  Upload
-                </button>
-              </form>
-
-              <div>
-                <label className="block text-sm text-[color:var(--muted)]">Profile image URL</label>
-                <input
-                  name="profileImageUrl"
-                  defaultValue={imageUrl ?? ''}
-                  placeholder="https://..."
-                  className="mt-1 w-full rounded-xl border border-[color:var(--border)] bg-[color:var(--surface-2)] px-3 py-2 text-[color:var(--fg)] outline-none focus:ring-2 focus:ring-[color:var(--selection)]"
-                />
-              </div>
             </div>
 
             <button
               type="submit"
               className="rounded-xl bg-[color:var(--fg)] px-4 py-2 text-sm font-semibold text-[color:var(--bg)] hover:opacity-90"
             >
-              Save
+              Save details
             </button>
           </form>
+
+          <hr className="my-6 border-[color:var(--border)]" />
+
+          <div className="space-y-4">
+            <h4 className="text-sm font-semibold text-[color:var(--fg)]">Upload new image</h4>
+            <form
+              action={async (fd) => {
+                'use server'
+                await uploadProfileImage(fd)
+                redirect('/admin/profile')
+              }}
+              className="flex flex-wrap items-center gap-3"
+            >
+              <input
+                type="file"
+                name="profileImage"
+                accept="image/png,image/jpeg,image/webp,.png,.jpg,.jpeg,.webp"
+                className="block w-full max-w-sm text-sm text-[color:var(--muted)] file:mr-4 file:rounded-xl file:border-0 file:bg-[color:var(--surface-2)] file:px-4 file:py-2 file:text-sm file:font-semibold file:text-[color:var(--fg)]"
+              />
+              <button
+                type="submit"
+                className="rounded-xl border border-[color:var(--border)] bg-transparent px-4 py-2 text-sm font-semibold text-[color:var(--fg)] hover:bg-[color:var(--surface)]"
+              >
+                Upload & Replace
+              </button>
+            </form>
+
+            <form
+              action={async (formData) => {
+                'use server'
+                await saveProfile({
+                  name: String(name ?? ''),
+                  title: String(title ?? ''),
+                  bio: String(bio ?? ''),
+                  location: String(location ?? ''),
+                  profileImageUrl: String(formData.get('profileImageUrl') ?? '').trim(),
+                })
+                redirect('/admin/profile')
+              }}
+              className="space-y-2"
+            >
+              <label className="block text-sm text-[color:var(--muted)]">Profile image URL (Direct Link)</label>
+              <div className="flex gap-2">
+                <input
+                  name="profileImageUrl"
+                  defaultValue={imageUrl ?? ''}
+                  placeholder="https://..."
+                  className="w-full rounded-xl border border-[color:var(--border)] bg-[color:var(--surface-2)] px-3 py-2 text-[color:var(--fg)] outline-none focus:ring-2 focus:ring-[color:var(--selection)]"
+                />
+                <button
+                  type="submit"
+                  className="rounded-xl border border-[color:var(--border)] bg-transparent px-4 py-2 text-sm font-semibold text-[color:var(--fg)] hover:bg-[color:var(--surface)]"
+                >
+                  Set URL
+                </button>
+              </div>
+            </form>
+          </div>
         </Card>
       ) : null}
 

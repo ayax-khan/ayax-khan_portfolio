@@ -36,6 +36,7 @@ export function ScrollReveal({
 
   useEffect(() => {
     if (prefersReducedMotion()) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setVisible(true)
       return
     }

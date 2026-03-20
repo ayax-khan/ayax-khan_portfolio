@@ -48,6 +48,7 @@ export function ThemeIndicator({ className }: { className?: string }) {
     }
 
     const resolved = stored ?? existing ?? 'light'
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setTheme(resolved)
     setMounted(true)
   }, [])

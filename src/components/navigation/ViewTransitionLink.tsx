@@ -49,12 +49,12 @@ export function ViewTransitionLink({ href, className, ...rest }: Props) {
       // Avoid transitions if user prefers reduced motion.
       if (prefersReducedMotion()) return
 
-      const startViewTransition = (document as any).startViewTransition as undefined | ((cb: () => void) => void)
-      if (!startViewTransition) return
+      const doc = document as Document & { startViewTransition?: (cb: () => void) => void }
+      if (typeof doc.startViewTransition !== 'function') return
 
       e.preventDefault()
       // IMPORTANT: call with the document binding to avoid "Illegal invocation" in some browsers.
-      ;(document as any).startViewTransition(() => {
+      doc.startViewTransition(() => {
         router.push(href)
       })
     },

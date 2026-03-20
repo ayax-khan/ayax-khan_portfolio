@@ -92,17 +92,72 @@ body {
   justify-content: center;
   border-radius: 9999px;
   border: 1px solid var(--border);
-  background: radial-gradient(80% 80% at 30% 20%, color-mix(in_srgb, var(--selection), transparent 55%), transparent);
+  background:
+    radial-gradient(80% 80% at 30% 20%, color-mix(in_srgb, var(--selection), transparent 55%), transparent),
+    radial-gradient(70% 70% at 70% 80%, rgba(56, 189, 248, 0.08), transparent 60%);
   box-shadow:
     0 10px 24px rgba(0, 0, 0, 0.18),
-    0 0 0 6px color-mix(in_srgb, var(--selection), transparent 80%);
+    0 0 0 6px color-mix(in_srgb, var(--selection), transparent 82%);
 }
 
 .hero-avatar__img {
+  position: relative;
+  z-index: 2;
   height: 52px;
   width: 52px;
   border-radius: 9999px;
   object-fit: cover;
+}
+
+/* Soft neon rings (rotate continuously) */
+.hero-avatar__ring {
+  position: absolute;
+  inset: -7px;
+  border-radius: 9999px;
+  pointer-events: none;
+  z-index: 1;
+
+  /* Make a ring using a radial mask */
+  background: conic-gradient(
+    from 0deg,
+    rgba(56, 189, 248, 0.0),
+    rgba(56, 189, 248, 0.55),
+    rgba(99, 102, 241, 0.45),
+    rgba(56, 189, 248, 0.0));
+  -webkit-mask: radial-gradient(closest-side, transparent calc(100% - 2px), #000 calc(100% - 1px));
+  mask: radial-gradient(closest-side, transparent calc(100% - 2px), #000 calc(100% - 1px));
+
+  opacity: 0.55;
+  filter: blur(0.2px) saturate(1.05);
+  transform: translateZ(0);
+}
+
+.hero-avatar__ring--b {
+  inset: -12px;
+  opacity: 0.30;
+  filter: blur(0.6px) saturate(1.1);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes heroAvatarSpin {
+    to {
+      transform: translateZ(0) rotate(360deg);
+    }
+  }
+
+  @keyframes heroAvatarSpinReverse {
+    to {
+      transform: translateZ(0) rotate(-360deg);
+    }
+  }
+
+  .hero-avatar__ring--a {
+    animation: heroAvatarSpin 7.5s linear infinite;
+  }
+
+  .hero-avatar__ring--b {
+    animation: heroAvatarSpinReverse 11.5s linear infinite;
+  }
 }
 
 @media (min-width: 768px) {
@@ -113,6 +168,13 @@ body {
   .hero-avatar__img {
     height: 66px;
     width: 66px;
+  }
+
+  .hero-avatar__ring {
+    inset: -9px;
+  }
+  .hero-avatar__ring--b {
+    inset: -16px;
   }
 }
 
@@ -307,6 +369,8 @@ body {
 
 .portfolio-hero__bg {
   background:
+    /* subtle banner aura to match avatar neon */
+    radial-gradient(520px 180px at 12% 40%, rgba(56, 189, 248, 0.10), transparent 62%),
     radial-gradient(900px 260px at 20% 20%, rgba(56, 189, 248, 0.18), transparent 55%),
     radial-gradient(750px 240px at 80% 30%, rgba(99, 102, 241, 0.16), transparent 58%),
     linear-gradient(to bottom, rgba(15, 23, 42, 0.04), rgba(15, 23, 42, 0.02));
@@ -314,18 +378,124 @@ body {
 
 :root[data-theme='navy'] .portfolio-hero__bg {
   background:
+    radial-gradient(520px 180px at 12% 40%, rgba(56, 189, 248, 0.08), transparent 62%),
     radial-gradient(900px 260px at 20% 20%, rgba(56, 189, 248, 0.12), transparent 55%),
     radial-gradient(750px 240px at 80% 30%, rgba(99, 102, 241, 0.14), transparent 58%),
     linear-gradient(to bottom, rgba(231, 238, 252, 0.06), rgba(231, 238, 252, 0.03));
 }
 
 .portfolio-hero__orb {
-  background:
-    radial-gradient(circle at 30% 30%, rgba(56, 189, 248, 0.45), transparent 60%),
-    radial-gradient(circle at 70% 70%, rgba(99, 102, 241, 0.35), transparent 62%);
-  filter: blur(1px);
-  opacity: 0.9;
+  position: relative;
+  opacity: 1;
+  overflow: visible;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 300px; /* Requested mobile size */
+  margin-left: auto;
+  margin-right: auto;
+  aspect-ratio: 1/1;
+  border-radius: 9999px;
+  z-index: 1;
 }
+
+@media (min-width: 768px) {
+  .portfolio-hero__orb {
+    max-width: 350px; /* Requested desktop size */
+    margin-right: 0;
+  }
+}
+
+
+/* Compact Typography for Mobile */
+.portfolio-hero h1 {
+  font-size: 1.5rem; /* Slightly smaller from 1.75rem */
+  line-height: 1.2;
+}
+
+@media (min-width: 640px) {
+  .portfolio-hero h1 {
+    font-size: 2.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .portfolio-hero h1 {
+    font-size: 3.75rem;
+  }
+}
+
+
+.portfolio-hero__orb-image-wrap {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 9999px;
+  overflow: hidden;
+  z-index: 2;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+}
+
+.portfolio-hero__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 20%; /* Keep head/face in view */
+  opacity: 1;
+  transition: transform 500ms cubic-bezier(.2,.9,.2,1);
+}
+
+.portfolio-hero__orb:hover .portfolio-hero__img {
+  transform: scale(1.05);
+}
+
+/* Revolving Neon Rings */
+.portfolio-hero__orb-ring {
+  position: absolute;
+  inset: -12px;
+  border-radius: 9999px;
+  pointer-events: none;
+  z-index: 1;
+
+  background: conic-gradient(
+    from 0deg,
+    transparent,
+    rgba(56, 189, 248, 0.6),
+    rgba(99, 102, 241, 0.5),
+    transparent 60%);
+  -webkit-mask: radial-gradient(closest-side, transparent calc(100% - 3px), #000 calc(100% - 1px));
+  mask: radial-gradient(closest-side, transparent calc(100% - 2px), #000 calc(100% - 1px));
+
+  opacity: 0.8;
+  filter: blur(1px) saturate(1.2);
+  animation: heroAvatarSpin 8s linear infinite;
+}
+
+.portfolio-hero__orb-ring--inner {
+  inset: -22px;
+  opacity: 0.4;
+  filter: blur(2px) saturate(1.1);
+  animation: heroAvatarSpinReverse 12s linear infinite;
+  background: conic-gradient(
+    from 180deg,
+    transparent,
+    rgba(99, 102, 241, 0.5),
+    rgba(56, 189, 248, 0.4),
+    transparent 60%);
+}
+
+:root[data-theme='navy'] .portfolio-hero__orb-ring {
+  filter: blur(1.5px) saturate(1.5) brightness(1.2);
+}
+
+
+.portfolio-hero__orb:hover .portfolio-hero__img {
+  transform: scale(1.08);
+}
+
 
 .portfolio-hero__accent {
   color: color-mix(in srgb, var(--fg), rgba(56, 189, 248, 1) 35%);

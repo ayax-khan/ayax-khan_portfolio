@@ -118,7 +118,7 @@ async function mapReposToProjects(
         updatedAt: r.pushed_at,
         repoUrl: r.html_url,
         demoUrl: o?.demoUrl ?? r.homepage,
-        thumbnailUrl: (o as any)?.thumbnailUrl ?? ogImage,
+        thumbnailUrl: o?.thumbnailUrl ?? ogImage,
         featured: o?.featured ?? false,
         visible: o?.visible ?? true,
         tags: o?.tags ?? [],

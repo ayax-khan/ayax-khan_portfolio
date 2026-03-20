@@ -45,7 +45,7 @@ export function RotatingProjectStack({ title, projects, orientation = 'landscape
             target="_blank"
             rel="noreferrer"
             className="rot-card"
-            style={{ ['--i' as any]: idx } as React.CSSProperties}
+            style={{ '--i': idx } as React.CSSProperties}
           >
             <div className="rot-card__media">
               {p.thumbnailUrl ? (

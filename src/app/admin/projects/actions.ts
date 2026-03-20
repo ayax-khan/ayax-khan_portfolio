@@ -53,7 +53,8 @@ export async function updateProjectOverride(input: unknown) {
     })
 
   const upsertWithoutThumbnail = () => {
-    const { thumbnailUrl: _thumb, ...rest } = data
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { thumbnailUrl, ...rest } = data
     return prisma.projectOverride.upsert({
       where: { repoFullName },
       create: {

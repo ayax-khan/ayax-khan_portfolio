@@ -10,7 +10,7 @@ import { ScrollProgress } from '@/components/motion/ScrollProgress'
 import { RotatingProjectStack } from '@/components/motion/RotatingProjectStack'
 import { getProjectsFromGithub } from '@/lib/github/repos'
 import { listPublishedPosts } from '@/lib/blog'
-import { site, socialLinks } from '@/lib/site'
+import { socialLinks } from '@/lib/site'
 import { getPublicProfile } from '@/lib/publicProfile'
 
 export const metadata = {
@@ -23,7 +23,7 @@ const coreSkills = ['TypeScript', 'Next.js', 'React', 'PostgreSQL', 'Prisma', 'S
 export default async function HomePage() {
   const [projects, posts, profile] = await Promise.all([getProjectsFromGithub(), listPublishedPosts(), getPublicProfile()])
 
-  const featured = projects.filter((p) => p.featured).slice(0, 3)
+  const featured = projects.filter((p) => p.featured)
   const latestPosts = posts.slice(0, 3)
 
   return (
@@ -32,73 +32,64 @@ export default async function HomePage() {
       <section className="portfolio-hero relative overflow-hidden rounded-[32px] border border-[color:var(--border)]">
         <div className="absolute inset-0 portfolio-hero__bg" aria-hidden="true" />
 
-        <Parallax strength={22} rotate={2}>
-          <div
-            className="pointer-events-none absolute -right-10 top-10 hidden h-72 w-72 rounded-full portfolio-hero__orb md:block"
-            aria-hidden="true"
-          />
-        </Parallax>
+        <div className="relative z-10 px-4 py-8 sm:px-10 sm:py-20">
+          <div className="flex flex-col-reverse gap-8 md:grid md:grid-cols-12 md:items-center md:gap-10">
+            {/* LEFT SIDE: Identity Area */}
+            <div className="md:col-span-7">
+              <div className="flex flex-col gap-4 sm:gap-6">
+                <div className="flex items-center gap-3">
+                  <ScrollReveal>
+                    <span className="hero-avatar sm:scale-100" aria-hidden={true}>
+                      <span className="hero-avatar__ring hero-avatar__ring--a" aria-hidden="true" />
+                      <span className="hero-avatar__ring hero-avatar__ring--b" aria-hidden="true" />
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src="/Mayaz.png" alt="Logo" className="relative z-2 h-12 w-12 rounded-full object-cover backdrop-blur-sm" />
+                    </span>
+                  </ScrollReveal>
+                  
+                  <ScrollReveal delayMs={80} y={10}>
+                    <h1 className="text-xl font-semibold tracking-tight sm:text-6xl">
+                      {profile.name}
+                      <span className="portfolio-hero__accent">.</span>
+                    </h1>
+                  </ScrollReveal>
+                </div>
 
-        <div className="relative z-10 px-6 py-14 sm:px-10 sm:py-16">
-          <ScrollReveal>
-            <div className="flex flex-wrap items-center gap-3">
-              {profile.imageUrl ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <span className="hero-avatar">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={profile.imageUrl}
-                    alt={profile.name}
-                    className="hero-avatar__img"
-                  />
-                </span>
-              ) : null}
-              <div className="flex flex-wrap items-center gap-2">
-                <Badge variant="muted">{profile.title}</Badge>
-                <Badge variant="muted">{profile.location}</Badge>
+                <ScrollReveal delayMs={140} y={15}>
+                  <div className="flex flex-wrap items-center gap-1 sm:gap-2">
+                    <Badge variant="muted" className="text-[10px] sm:text-xs">{profile.title}</Badge>
+                    <Badge variant="muted" className="text-[10px] sm:text-xs">{profile.location}</Badge>
+                  </div>
+                  <p className="mt-3 max-w-2xl text-xs leading-relaxed text-[color:var(--muted)] sm:mt-5 sm:text-lg">
+                    {profile.bio}
+                  </p>
+                </ScrollReveal>
+
+                <ScrollReveal delayMs={200} y={15}>
+                  <div className="flex flex-wrap gap-2 sm:gap-3">
+                    <LinkButton href="/projects" className="px-3 py-1.5 text-xs sm:px-4 sm:py-2 sm:text-sm">Projects</LinkButton>
+                    <LinkButton href="/contact" variant="secondary" className="px-3 py-1.5 text-xs sm:px-4 sm:py-2 sm:text-sm">
+                      Contact
+                    </LinkButton>
+                  </div>
+                </ScrollReveal>
               </div>
             </div>
-          </ScrollReveal>
 
-          <ScrollReveal delayMs={80} y={18}>
-            <h1 className="mt-5 max-w-3xl text-4xl font-semibold tracking-tight sm:text-6xl">
-              {profile.name}
-              <span className="portfolio-hero__accent">.</span>
-            </h1>
-          </ScrollReveal>
-
-          <ScrollReveal delayMs={140} y={18}>
-            <p className="mt-5 max-w-2xl text-base leading-relaxed text-[color:var(--muted)] sm:text-lg">
-              {profile.bio}
-            </p>
-          </ScrollReveal>
-
-          <ScrollReveal delayMs={200} y={18}>
-            <div className="mt-7 flex flex-wrap gap-3">
-              <LinkButton href="/projects">View Projects</LinkButton>
-              <LinkButton href="/contact" variant="secondary">
-                Contact
-              </LinkButton>
-              <LinkButton href="/about" variant="ghost">
-                About
-              </LinkButton>
-              {socialLinks().slice(0, 2).map((l) => (
-                <LinkButton key={l.href} href={l.href} variant="ghost" target="_blank" rel="noreferrer">
-                  {l.label}
-                </LinkButton>
-              ))}
+            {/* RIGHT SIDE: Orb */}
+            <div className="flex justify-center md:col-span-5 md:block">
+              <Parallax strength={15} rotate={2}>
+                <div className="portfolio-hero__orb md:origin-center" aria-hidden="true">
+                  <div className="portfolio-hero__orb-ring" />
+                  <div className="portfolio-hero__orb-ring portfolio-hero__orb-ring--inner" />
+                  <div className="portfolio-hero__orb-image-wrap">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={profile.imageUrl || '/ayaz.png'} alt="" className="portfolio-hero__img" />
+                  </div>
+                </div>
+              </Parallax>
             </div>
-          </ScrollReveal>
-
-          <ScrollReveal delayMs={260} y={18}>
-            <div className="mt-10 flex flex-wrap gap-2">
-              {coreSkills.map((s) => (
-                <Badge key={s} variant="muted">
-                  {s}
-                </Badge>
-              ))}
-            </div>
-          </ScrollReveal>
+          </div>
         </div>
       </section>
 

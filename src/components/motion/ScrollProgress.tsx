@@ -63,7 +63,7 @@ export function ScrollProgress({ children, className, cssVarName = '--scroll-pro
   }, [cssVarName])
 
   return (
-    <div ref={ref} className={className} style={{ [cssVarName as any]: '0' }}>
+    <div ref={ref} className={className} style={{ [cssVarName]: '0' } as React.CSSProperties}>
       {children}
     </div>
   )

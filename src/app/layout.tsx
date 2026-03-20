@@ -24,6 +24,11 @@ export const metadata: Metadata = {
     template: `%s — ${site.name}`,
   },
   description: site.description,
+  icons: {
+    icon: '/aklogo.png',
+    shortcut: '/aklogo.png',
+    apple: '/aklogo.png',
+  },
   openGraph: {
     type: 'website',
     title: `${site.name} — ${site.role}`,

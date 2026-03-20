@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --webpack",
     "dev:clean": "node -e \"const fs=require('fs'); fs.rmSync('.next',{recursive:true,force:true}); console.log('Deleted .next cache');\"", 
     "prebuild": "node -e \"const {spawnSync}=require('child_process'); const r=spawnSync('pnpm',['-s','prisma:generate'],{stdio:'inherit',shell:true}); if(r.status!==0){ console.warn('Warning: prisma generate failed (often due to Windows file lock). Continuing build.'); process.exit(0);}\"",
     "build": "next build",

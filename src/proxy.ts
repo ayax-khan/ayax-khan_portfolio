@@ -22,7 +22,9 @@ export default function proxy(req: NextRequest) {
   const pass = process.env.ADMIN_PASSWORD
 
   if (!user || !pass) {
-    if (process.env.NODE_ENV === 'production') return unauthorized()
+    if (process.env.NODE_ENV === 'production') {
+      return new NextResponse('Error: ADMIN_USER or ADMIN_PASSWORD environment variables are missing in Vercel. Please add them and redeploy.', { status: 500 })
+    }
     return NextResponse.next()
   }
 

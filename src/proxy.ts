@@ -31,7 +31,7 @@ export default function proxy(req: NextRequest) {
 
   try {
     const b64 = auth.slice('basic '.length)
-    const [u, p] = Buffer.from(b64, 'base64').toString('utf8').split(':')
+    const [u, p] = atob(b64).split(':')
     if (u !== user || p !== pass) return unauthorized()
   } catch {
     return unauthorized()

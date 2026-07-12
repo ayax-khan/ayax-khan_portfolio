@@ -8,7 +8,7 @@ import { getProjectsFromGithub } from '@/lib/github/repos'
 
 export const metadata = {
   title: 'Projects',
-  description: 'A curated list of projects synced from GitHub, with portfolio-specific details.',
+  description: 'Featured projects synced from GitHub with portfolio-specific details.',
 }
 
 export default async function ProjectsPage({
@@ -19,7 +19,8 @@ export default async function ProjectsPage({
   const sp = await searchParams
   const selectedTag = String(sp.tag ?? '').trim()
 
-  const projects = await getProjectsFromGithub()
+  const allProjects = await getProjectsFromGithub()
+  const projects = allProjects.filter((p) => p.featured)
 
   const languages = Array.from(new Set(projects.map((p) => p.language).filter(Boolean)))
     .sort()
@@ -72,11 +73,8 @@ export default async function ProjectsPage({
       ) : null}
 
       {filteredProjects.length === 0 ? (
-        <Card title={selectedTag ? `No projects for tag: ${selectedTag}` : 'No projects yet'}>
-          <p>
-            Configure <span className="font-mono">GITHUB_USERNAME</span> and <span className="font-mono">GITHUB_TOKEN</span> to
-            fetch your repos.
-          </p>
+        <Card title={selectedTag ? `No featured projects for tag: ${selectedTag}` : 'No featured projects yet'}>
+          <p>Mark projects as featured in the admin panel to see them here.</p>
         </Card>
       ) : (
         <div className="grid gap-4 md:grid-cols-2">

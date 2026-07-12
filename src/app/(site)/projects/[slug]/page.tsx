@@ -1,11 +1,8 @@
-import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { TrackedLinkButton } from '@/components/analytics/TrackedLinkButton'
-import { LinkButton } from '@/components/ui/LinkButton'
 import { Card } from '@/components/ui/Card'
 import { Badge } from '@/components/ui/Badge'
 import { Markdown } from '@/components/ui/Markdown'
-import { Prose } from '@/components/ui/Prose'
 import { getProjectsFromGithub } from '@/lib/github/repos'
 import { getRepoReadme } from '@/lib/github/readme'
 import { getRepoCommitCount } from '@/lib/github/commits'
@@ -74,18 +71,12 @@ export default async function ProjectDetailPage({
               Live Demo
             </TrackedLinkButton>
           ) : null}
-          <LinkButton href="/projects" variant="ghost">
-            All Projects
-          </LinkButton>
         </div>
       </header>
 
       {readme ? (
-        <section className="space-y-4">
-          <h2 className="text-lg font-semibold">README</h2>
-          <Prose>
-            <Markdown content={readme} />
-          </Prose>
+        <section className="rounded-2xl border border-[color:var(--border)] bg-[color:var(--surface)] p-6 sm:p-8">
+          <Markdown content={readme} />
         </section>
       ) : (
         <section className="grid gap-4 md:grid-cols-2">
@@ -97,7 +88,7 @@ export default async function ProjectDetailPage({
               <li>Language: {project.language ?? 'N/A'}</li>
               <li>Stars: {project.stars}</li>
               <li>Commits: {commitCount}</li>
-              {project.demoUrl ? <li>Demo: <Link href={project.demoUrl} target="_blank" rel="noreferrer" className="text-[color:var(--muted)] hover:text-[color:var(--fg)]">available</Link></li> : null}
+              {project.demoUrl ? <li>Demo: available</li> : null}
             </ul>
           </Card>
         </section>

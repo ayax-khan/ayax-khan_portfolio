@@ -90,54 +90,20 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ROTATING CATEGORY STACKS */}
+      {/* 3D ROTATING PROJECT STACK */}
       <section className="rot-stacks">
-        {(() => {
-          const ai = projects.filter((p) => p.tags.map((t) => t.toLowerCase()).includes('ai'))
-          const web = projects.filter((p) => p.tags.map((t) => t.toLowerCase()).includes('web'))
-          const app = projects.filter((p) => p.tags.map((t) => t.toLowerCase()).includes('app'))
-
-          return (
-            <div className="rot-stacks__grid">
-              <RotatingProjectStack
-                title="AI"
-                projects={ai.map((p) => ({
-                  slug: p.slug,
-                  name: p.name,
-                  description: p.description,
-                  repoUrl: p.repoUrl,
-                  demoUrl: p.demoUrl,
-                  thumbnailUrl: p.thumbnailUrl,
-                }))}
-                orientation="portrait"
-              />
-              <RotatingProjectStack
-                title="Web"
-                projects={web.map((p) => ({
-                  slug: p.slug,
-                  name: p.name,
-                  description: p.description,
-                  repoUrl: p.repoUrl,
-                  demoUrl: p.demoUrl,
-                  thumbnailUrl: p.thumbnailUrl,
-                }))}
-                orientation="landscape"
-              />
-              <RotatingProjectStack
-                title="Apps"
-                projects={app.map((p) => ({
-                  slug: p.slug,
-                  name: p.name,
-                  description: p.description,
-                  repoUrl: p.repoUrl,
-                  demoUrl: p.demoUrl,
-                  thumbnailUrl: p.thumbnailUrl,
-                }))}
-                orientation="portrait"
-              />
-            </div>
-          )
-        })()}
+        <RotatingProjectStack
+          title="Projects"
+          projects={projects.map((p) => ({
+            slug: p.slug,
+            name: p.name,
+            description: p.description,
+            repoUrl: p.repoUrl,
+            demoUrl: p.demoUrl,
+            thumbnailUrl: p.thumbnailUrl,
+          }))}
+          orientation="landscape"
+        />
       </section>
 
       {/* PROJECTS (pinned / Apple-style) */}

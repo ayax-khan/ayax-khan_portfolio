@@ -1,8 +1,8 @@
-import Link from 'next/link'
 import { Card } from '@/components/ui/Card'
-import { TrackedLinkButton } from '@/components/analytics/TrackedLinkButton'
-import { LinkButton } from '@/components/ui/LinkButton'
 import { Badge } from '@/components/ui/Badge'
+import { LinkButton } from '@/components/ui/LinkButton'
+import { ClickableCard } from '@/components/ui/ClickableCard'
+import { ExternalButton } from '@/components/ui/ExternalButton'
 import { SectionHeading } from '@/components/ui/SectionHeading'
 import { getProjectsFromGithub } from '@/lib/github/repos'
 
@@ -81,39 +81,13 @@ export default async function ProjectsPage({
       ) : (
         <div className="grid gap-4 md:grid-cols-2">
           {filteredProjects.map((p) => (
-            <div key={p.fullName} className="group relative">
-              <Link
-                href={`/projects/${p.slug}`}
-                className="absolute inset-0 z-10 rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--selection)]"
-                aria-label={p.name}
-              />
+            <ClickableCard key={p.fullName} href={`/projects/${p.slug}`} ariaLabel={p.name}>
               <Card
                 title={p.name}
                 footer={
-                  <div className="relative z-20 flex flex-wrap gap-2">
-                    <LinkButton href={`/projects/${p.slug}`} variant="secondary">
-                      Details
-                    </LinkButton>
-                    <TrackedLinkButton
-                      href={p.repoUrl}
-                      variant="ghost"
-                      target="_blank"
-                      rel="noreferrer"
-                      analyticsMeta={{ kind: 'github_repo', repoFullName: p.fullName, slug: p.slug }}
-                    >
-                      GitHub
-                    </TrackedLinkButton>
-                    {p.demoUrl ? (
-                      <TrackedLinkButton
-                        href={p.demoUrl}
-                        variant="ghost"
-                        target="_blank"
-                        rel="noreferrer"
-                        analyticsMeta={{ kind: 'demo', repoFullName: p.fullName, slug: p.slug }}
-                      >
-                        Live demo
-                      </TrackedLinkButton>
-                    ) : null}
+                  <div className="flex flex-wrap gap-2">
+                    <ExternalButton href={p.repoUrl}>GitHub</ExternalButton>
+                    {p.demoUrl ? <ExternalButton href={p.demoUrl}>Live demo</ExternalButton> : null}
                   </div>
                 }
               >
@@ -133,7 +107,7 @@ export default async function ProjectsPage({
                   {p.language ?? 'N/A'} · ★ {p.stars} · Updated {new Date(p.updatedAt).toISOString().slice(0, 10)}
                 </p>
               </Card>
-            </div>
+            </ClickableCard>
           ))}
         </div>
       )}

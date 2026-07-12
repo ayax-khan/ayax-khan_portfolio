@@ -1,8 +1,9 @@
 import Link from 'next/link'
-
-import { LinkButton } from '@/components/ui/LinkButton'
 import { Card } from '@/components/ui/Card'
 import { Badge } from '@/components/ui/Badge'
+import { LinkButton } from '@/components/ui/LinkButton'
+import { ClickableCard } from '@/components/ui/ClickableCard'
+import { ExternalButton } from '@/components/ui/ExternalButton'
 import { SectionHeading } from '@/components/ui/SectionHeading'
 import { ScrollReveal } from '@/components/motion/ScrollReveal'
 import { Parallax } from '@/components/motion/Parallax'
@@ -128,28 +129,13 @@ export default async function HomePage() {
               <div className="grid gap-4">
                 {featured.map((p, idx) => (
                   <ScrollReveal key={p.fullName} delayMs={80 * idx}>
-                    <div className="group relative">
-                      <Link
-                        href={`/projects/${p.slug}`}
-                        className="absolute inset-0 z-10 rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--selection)]"
-                        aria-label={p.name}
-                      />
+                    <ClickableCard href={`/projects/${p.slug}`} ariaLabel={p.name}>
                       <Card
-                        className="portfolio-pinned__card"
                         title={p.name}
                         footer={
-                          <div className="relative z-20 flex flex-wrap gap-2">
-                            <LinkButton href={`/projects/${p.slug}`} variant="secondary">
-                              Details
-                            </LinkButton>
-                            <LinkButton href={p.repoUrl} variant="ghost" target="_blank" rel="noreferrer">
-                              GitHub
-                            </LinkButton>
-                            {p.demoUrl ? (
-                              <LinkButton href={p.demoUrl} variant="ghost" target="_blank" rel="noreferrer">
-                                Live demo
-                              </LinkButton>
-                            ) : null}
+                          <div className="flex flex-wrap gap-2">
+                            <ExternalButton href={p.repoUrl}>GitHub</ExternalButton>
+                            {p.demoUrl ? <ExternalButton href={p.demoUrl}>Live demo</ExternalButton> : null}
                           </div>
                         }
                       >
@@ -169,7 +155,7 @@ export default async function HomePage() {
                           {p.language ?? 'N/A'} · ★ {p.stars} · Updated {new Date(p.updatedAt).toISOString().slice(0, 10)}
                         </p>
                       </Card>
-                    </div>
+                    </ClickableCard>
                   </ScrollReveal>
                 ))}
               </div>

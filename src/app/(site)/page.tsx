@@ -7,7 +7,6 @@ import { SectionHeading } from '@/components/ui/SectionHeading'
 import { ScrollReveal } from '@/components/motion/ScrollReveal'
 import { Parallax } from '@/components/motion/Parallax'
 import { ScrollProgress } from '@/components/motion/ScrollProgress'
-import { RotatingProjectStack } from '@/components/motion/RotatingProjectStack'
 import { getProjectsFromGithub } from '@/lib/github/repos'
 import { listPublishedPosts } from '@/lib/blog'
 import { getPublicProfile } from '@/lib/publicProfile'
@@ -88,22 +87,6 @@ export default async function HomePage() {
             </div>
           </div>
         </div>
-      </section>
-
-      {/* 3D ROTATING PROJECT STACK */}
-      <section className="rot-stacks">
-        <RotatingProjectStack
-          title="Projects"
-          projects={projects.map((p) => ({
-            slug: p.slug,
-            name: p.name,
-            description: p.description,
-            repoUrl: p.repoUrl,
-            demoUrl: p.demoUrl,
-            thumbnailUrl: p.thumbnailUrl,
-          }))}
-          orientation="landscape"
-        />
       </section>
 
       {/* PROJECTS (pinned / Apple-style) */}

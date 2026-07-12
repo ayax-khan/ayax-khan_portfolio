@@ -31,7 +31,7 @@ export default async function AdminBlogPage() {
       <header className="space-y-2">
         <h1 className="text-2xl font-semibold">Admin · Blog</h1>
         <p className="max-w-2xl text-[color:var(--muted)]">
-          Create/edit posts stored in Postgres. Use Markdown content, draft/publish toggle, and SEO fields.
+          Create/edit posts stored in Postgres. Rich text editor with draft/publish toggle and SEO fields.
         </p>
       </header>
 

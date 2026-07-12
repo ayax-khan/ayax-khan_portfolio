@@ -1,8 +1,6 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { Prose } from '@/components/ui/Prose'
 import { Badge } from '@/components/ui/Badge'
-import { Markdown } from '@/components/ui/Markdown'
 import { getPostBySlug } from '@/lib/blog'
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
@@ -29,11 +27,11 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         </Link>
       </div>
 
-      <Prose>
-        <h1>{post.title}</h1>
-        {post.summary ? <p className="lead">{post.summary}</p> : null}
+      <div>
+        <h1 className="text-3xl font-bold tracking-tight text-[color:var(--fg)]">{post.title}</h1>
+        {post.summary ? <p className="mt-3 text-lg text-[color:var(--muted)]">{post.summary}</p> : null}
 
-        <div className="not-prose mt-4 flex flex-wrap items-center gap-2">
+        <div className="mt-4 flex flex-wrap items-center gap-2">
           {post.publishedAt ? (
             <Badge variant="muted">{new Date(post.publishedAt).toISOString().slice(0, 10)}</Badge>
           ) : null}
@@ -44,10 +42,13 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           ))}
         </div>
 
-        <hr />
+        <hr className="my-6 border-[color:var(--border)]" />
 
-        <Markdown content={post.content} />
-      </Prose>
+        <div
+          className="blog-content"
+          dangerouslySetInnerHTML={{ __html: post.content }}
+        />
+      </div>
     </div>
   )
 }

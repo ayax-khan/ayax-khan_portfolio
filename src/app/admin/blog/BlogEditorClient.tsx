@@ -2,8 +2,7 @@
 
 import { useMemo, useState } from 'react'
 import { Badge } from '@/components/ui/Badge'
-import { Markdown } from '@/components/ui/Markdown'
-import { Prose } from '@/components/ui/Prose'
+import { RichTextEditor } from '@/components/ui/RichTextEditor'
 
 export type AdminBlogPost = {
   id: string
@@ -227,15 +226,15 @@ export function BlogEditorClient({ posts, onSave, onDelete }: Props) {
               </div>
 
               <div>
-                <label className="block text-sm text-[color:var(--muted)]">Content (Markdown)</label>
-                <textarea
-                  name="content"
-                  value={draft.content}
-                  onChange={(e) => setDraft({ ...draft, content: e.target.value })}
-                  rows={16}
-                  className="mt-1 w-full rounded-xl border border-[color:var(--border)] bg-[color:var(--surface-2)] px-3 py-2 font-mono text-sm text-[color:var(--fg)] outline-none focus:ring-2 focus:ring-[color:var(--selection)]"
-                  required
-                />
+                <label className="block text-sm text-[color:var(--muted)]">Content</label>
+                <input type="hidden" name="content" value={draft.content} />
+                <div className="mt-1">
+                  <RichTextEditor
+                    value={draft.content}
+                    onChange={(html) => setDraft({ ...draft, content: html })}
+                    placeholder="Start writing..."
+                  />
+                </div>
               </div>
 
               <div className="grid gap-4 md:grid-cols-2">
@@ -318,11 +317,14 @@ export function BlogEditorClient({ posts, onSave, onDelete }: Props) {
               ))}
             </div>
 
-            <Prose>
-              <h1>{draft.title || 'Untitled'}</h1>
-              {draft.summary ? <p className="lead">{draft.summary}</p> : null}
-              <Markdown content={draft.content || '_Start writing..._'} />
-            </Prose>
+            <div className="mt-4">
+              <h2 className="text-2xl font-semibold text-[color:var(--fg)]">{draft.title || 'Untitled'}</h2>
+              {draft.summary ? <p className="mt-2 text-[color:var(--muted)]">{draft.summary}</p> : null}
+              <div
+                className="mt-4 blog-content"
+                dangerouslySetInnerHTML={{ __html: draft.content || '<p>Start writing...</p>' }}
+              />
+            </div>
           </div>
         </div>
       ) : null}

@@ -11,13 +11,10 @@ export const dynamic = 'force-dynamic'
 
 const editableSettings = [
   { key: 'profile.name', label: 'Profile name' },
-  { key: 'profile.role', label: 'Role' },
-  { key: 'profile.headline', label: 'Headline' },
+  { key: 'profile.title', label: 'Role / Title' },
+  { key: 'profile.bio', label: 'Bio / Headline' },
   { key: 'profile.location', label: 'Location' },
   { key: 'profile.email', label: 'Email' },
-  { key: 'social.github', label: 'GitHub URL' },
-  { key: 'social.linkedin', label: 'LinkedIn URL' },
-  { key: 'social.x', label: 'X URL' },
 ] as const
 
 export default async function AdminSettingsPage() {

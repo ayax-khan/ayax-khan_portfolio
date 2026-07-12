@@ -1,8 +1,6 @@
 'use server'
 
 import crypto from 'node:crypto'
-import path from 'node:path'
-import { mkdir, unlink, writeFile } from 'node:fs/promises'
 import { z } from 'zod'
 import { getSetting, setSetting } from '@/lib/settings'
 
@@ -48,18 +46,13 @@ export async function uploadProfileImage(formData: FormData): Promise<{ url: str
     throw new Error('Only PNG, JPG, or WEBP images are allowed.')
   }
 
-  const dir = path.join(process.cwd(), 'public', 'uploads', 'profile')
-  await mkdir(dir, { recursive: true })
-
-  // Single active avatar file (overwrite) keeps things simple.
-  const fileName = `avatar.${ext}`
-  const url = `/uploads/profile/${fileName}`
-
+  // Store image as base64 data URL in DB (works on serverless platforms like Vercel)
   const arrayBuffer = await file.arrayBuffer()
-  await writeFile(path.join(dir, fileName), Buffer.from(arrayBuffer))
+  const base64 = Buffer.from(arrayBuffer).toString('base64')
+  const dataUrl = `data:${resolvedMime};base64,${base64}`
 
-  await setSetting('profile.imageUrl', url)
-  return { url }
+  await setSetting('profile.imageUrl', dataUrl)
+  return { url: dataUrl }
 }
 
 const MAX_RESUME_BYTES = 8 * 1024 * 1024 // 8MB
@@ -67,7 +60,6 @@ const MAX_RESUME_BYTES = 8 * 1024 * 1024 // 8MB
 export type ResumeEntry = {
   id: string
   originalName: string
-  fileName: string
   url: string
   uploadedAt: string
 }
@@ -84,7 +76,6 @@ const ResumeSettingsSchema: z.ZodType<ResumeSettings> = z.object({
       z.object({
         id: z.string().min(1),
         originalName: z.string().min(1).max(200),
-        fileName: z.string().min(1),
         url: z.string().min(1),
         uploadedAt: z.string().min(1),
       }),
@@ -102,7 +93,6 @@ async function getResumeSettings(): Promise<ResumeSettings> {
 async function persistResumeSettings(next: ResumeSettings) {
   await setSetting('profile.resumes', next)
   const active = next.activeId ? next.items.find((x) => x.id === next.activeId) : null
-  // Backwards compatibility: keep a single resume URL setting too.
   await setSetting('profile.resumeUrl', active?.url ?? '')
 }
 
@@ -111,9 +101,6 @@ export async function uploadResumes(formData: FormData) {
 
   const files = formData.getAll('resumes').filter((x): x is File => x instanceof File)
   if (files.length === 0) return
-
-  const dir = path.join(process.cwd(), 'public', 'uploads', 'resumes')
-  await mkdir(dir, { recursive: true })
 
   const current = await getResumeSettings()
   const next: ResumeSettings = { ...current, items: [...current.items] }
@@ -134,21 +121,19 @@ export async function uploadResumes(formData: FormData) {
 
     const id = crypto.randomUUID()
     const safeOriginal = (file.name || 'resume.pdf').replace(/[^a-zA-Z0-9._-]/g, '_').slice(0, 200)
-    const fileName = `${id}.pdf`
-    const url = `/uploads/resumes/${fileName}`
 
+    // Store resume as base64 data URL in DB (works on serverless platforms like Vercel)
     const arrayBuffer = await file.arrayBuffer()
-    await writeFile(path.join(dir, fileName), Buffer.from(arrayBuffer))
+    const base64 = Buffer.from(arrayBuffer).toString('base64')
+    const dataUrl = `data:application/pdf;base64,${base64}`
 
     next.items.unshift({
       id,
       originalName: safeOriginal,
-      fileName,
-      url,
+      url: dataUrl,
       uploadedAt: new Date().toISOString(),
     })
 
-    // If nothing is active yet, make the first upload active.
     if (!next.activeId) next.activeId = id
   }
 
@@ -163,16 +148,6 @@ export async function setActiveResume(id: string) {
 
 export async function deleteResume(id: string) {
   const current = await getResumeSettings()
-  const entry = current.items.find((x) => x.id === id)
-  if (!entry) return
-
-  const dir = path.join(process.cwd(), 'public', 'uploads', 'resumes')
-  try {
-    await unlink(path.join(dir, entry.fileName))
-  } catch {
-    // ignore missing file
-  }
-
   const items = current.items.filter((x) => x.id !== id)
   const activeId = current.activeId === id ? (items[0]?.id ?? null) : current.activeId
   await persistResumeSettings({ activeId, items })

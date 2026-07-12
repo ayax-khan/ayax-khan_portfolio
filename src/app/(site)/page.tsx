@@ -18,8 +18,6 @@ export const metadata = {
   description: 'Projects, writing, and contact information.',
 }
 
-const coreSkills = ['TypeScript', 'Next.js', 'React', 'PostgreSQL', 'Prisma', 'Security', 'Performance'] as const
-
 export default async function HomePage() {
   const [projects, posts, profile] = await Promise.all([getProjectsFromGithub(), listPublishedPosts(), getPublicProfile()])
 
@@ -258,7 +256,7 @@ export default async function HomePage() {
               A quick snapshot of the tools I ship with day-to-day.
             </p>
             <div className="mt-4 flex flex-wrap gap-2">
-              {coreSkills.map((s) => (
+              {(profile.skills.length > 0 ? profile.skills : ['TypeScript', 'Next.js', 'React', 'PostgreSQL', 'Prisma', 'Security', 'Performance']).map((s) => (
                 <Badge key={s}>{s}</Badge>
               ))}
             </div>

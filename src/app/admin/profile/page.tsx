@@ -105,7 +105,7 @@ export default async function AdminProfilePage({
                 location: String(formData.get('location') ?? '').trim(),
                 profileImageUrl: String(formData.get('profileImageUrl') ?? '').trim(),
               })
-              redirect('/admin/profile')
+              redirect('/admin/profile?saved=1')
             }}
             className="mt-3 space-y-4"
           >
@@ -185,7 +185,7 @@ export default async function AdminProfilePage({
               action={async (fd) => {
                 'use server'
                 await uploadProfileImage(fd)
-                redirect('/admin/profile')
+                redirect('/admin/profile?saved=1')
               }}
               className="flex flex-wrap items-center gap-3"
             >
@@ -213,7 +213,7 @@ export default async function AdminProfilePage({
                   location: String(location ?? ''),
                   profileImageUrl: String(formData.get('profileImageUrl') ?? '').trim(),
                 })
-                redirect('/admin/profile')
+                redirect('/admin/profile?saved=1')
               }}
               className="space-y-2"
             >
@@ -244,7 +244,7 @@ export default async function AdminProfilePage({
               action={async (formData) => {
                 'use server'
                 await uploadResumes(formData)
-                redirect('/admin/profile?tab=resume')
+                redirect('/admin/profile?tab=resume&saved=1')
               }}
               className="mt-3 space-y-4"
             >
@@ -297,7 +297,7 @@ export default async function AdminProfilePage({
                             action={async () => {
                               'use server'
                               await setActiveResume(r.id)
-                              redirect('/admin/profile?tab=resume')
+                              redirect('/admin/profile?tab=resume&saved=1')
                             }}
                           >
                             <button
@@ -313,7 +313,7 @@ export default async function AdminProfilePage({
                           action={async () => {
                             'use server'
                             await deleteResume(r.id)
-                            redirect('/admin/profile?tab=resume')
+                            redirect('/admin/profile?tab=resume&saved=1')
                           }}
                         >
                           <button
@@ -344,7 +344,7 @@ export default async function AdminProfilePage({
                 .map((s) => s.trim())
                 .filter(Boolean)
               await saveSkills(list)
-              redirect('/admin/profile?tab=skills')
+              redirect('/admin/profile?tab=skills&saved=1')
             }}
             className="mt-3 space-y-4"
           >
@@ -372,7 +372,7 @@ export default async function AdminProfilePage({
               action={async (formData) => {
                 'use server'
                 await addExperienceEntry(formData)
-                redirect('/admin/profile?tab=experience')
+                redirect('/admin/profile?tab=experience&saved=1')
               }}
               className="mt-3 grid gap-4 md:grid-cols-2"
             >
@@ -480,7 +480,7 @@ export default async function AdminProfilePage({
                           action={async () => {
                             'use server'
                             await deleteExperienceEntry(e.id)
-                            redirect('/admin/profile?tab=experience')
+                            redirect('/admin/profile?tab=experience&saved=1')
                           }}
                         >
                           <button
@@ -499,7 +499,7 @@ export default async function AdminProfilePage({
                         action={async (formData) => {
                           'use server'
                           await updateExperienceEntry(e.id, formData)
-                          redirect('/admin/profile?tab=experience')
+                          redirect('/admin/profile?tab=experience&saved=1')
                         }}
                         className="mt-3 grid gap-4 md:grid-cols-2"
                       >
@@ -590,7 +590,7 @@ export default async function AdminProfilePage({
               action={async (formData) => {
                 'use server'
                 await addEducationEntry(formData)
-                redirect('/admin/profile?tab=education')
+                redirect('/admin/profile?tab=education&saved=1')
               }}
               className="mt-3 grid gap-4 md:grid-cols-2"
             >
@@ -718,7 +718,7 @@ export default async function AdminProfilePage({
                           action={async () => {
                             'use server'
                             await deleteEducationEntry(e.id)
-                            redirect('/admin/profile?tab=education')
+                            redirect('/admin/profile?tab=education&saved=1')
                           }}
                         >
                           <button
@@ -737,7 +737,7 @@ export default async function AdminProfilePage({
                         action={async (formData) => {
                           'use server'
                           await updateEducationEntry(e.id, formData)
-                          redirect('/admin/profile?tab=education')
+                          redirect('/admin/profile?tab=education&saved=1')
                         }}
                         className="mt-3 grid gap-4 md:grid-cols-2"
                       >
@@ -847,7 +847,7 @@ export default async function AdminProfilePage({
               const payload: Links = {}
               for (const k of keys) payload[k] = String(formData.get(k) ?? '').trim()
               await saveSocialLinks(payload)
-              redirect('/admin/profile?tab=social')
+              redirect('/admin/profile?tab=social&saved=1')
             }}
             className="mt-3 space-y-4"
           >

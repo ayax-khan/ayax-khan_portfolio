@@ -1,9 +1,10 @@
 'use client'
 
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState, useCallback } from 'react'
 
 type CommitItem = { sha: string; message: string; date: string; url: string }
 import { Badge } from '@/components/ui/Badge'
+import { useToast } from '@/components/ui/Toast'
 
 type ProjectRow = {
   fullName: string
@@ -52,6 +53,37 @@ const filters = ['all', 'featured', 'visible', 'hidden'] as const
 type Filter = (typeof filters)[number]
 
 export function ProjectsClient({ projects, onUpdate, onReset, onSaveOrder, onSyncNow }: Props) {
+  const { show } = useToast()
+
+  const updateWithToast = useCallback(
+    async (formData: FormData) => {
+      await onUpdate(formData)
+      show('Project updated!')
+    },
+    [onUpdate, show],
+  )
+
+  const resetWithToast = useCallback(
+    async (formData: FormData) => {
+      await onReset(formData)
+      show('Project overrides reset!')
+    },
+    [onReset, show],
+  )
+
+  const saveOrderWithToast = useCallback(
+    async (formData: FormData) => {
+      await onSaveOrder(formData)
+      show('Order saved!')
+    },
+    [onSaveOrder, show],
+  )
+
+  const syncWithToast = useCallback(async () => {
+    await onSyncNow()
+    show('Sync complete!')
+  }, [onSyncNow, show])
+
   const [query, setQuery] = useState('')
   const [filter, setFilter] = useState<Filter>('all')
   const [language, setLanguage] = useState<string>('all')
@@ -114,7 +146,7 @@ export function ProjectsClient({ projects, onUpdate, onReset, onSaveOrder, onSyn
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap items-end gap-3">
-        <form action={onSyncNow} className="shrink-0">
+        <form action={syncWithToast} className="shrink-0">
           <button
             type="submit"
             className="rounded-xl border border-[color:var(--border)] bg-[color:var(--surface-2)] px-4 py-2 text-sm font-semibold text-[color:var(--fg)] hover:bg-[color:var(--surface)]"
@@ -186,7 +218,7 @@ export function ProjectsClient({ projects, onUpdate, onReset, onSaveOrder, onSyn
           </button>
 
           {ordering ? (
-            <form action={onSaveOrder} onSubmit={() => setOrdering(false)}>
+            <form action={saveOrderWithToast} onSubmit={() => setOrdering(false)}>
               <input type="hidden" name="orderJson" value={JSON.stringify(ordered.map((p) => p.fullName))} />
               <button
                 type="submit"
@@ -271,7 +303,7 @@ export function ProjectsClient({ projects, onUpdate, onReset, onSaveOrder, onSyn
 
               {isOpen ? (
                 <div className="border-t border-[color:var(--border)] p-4">
-                  <form action={onUpdate} className="grid gap-4 md:grid-cols-2">
+                  <form action={updateWithToast} className="grid gap-4 md:grid-cols-2">
                     <input type="hidden" name="repoFullName" value={p.fullName} />
 
                     <div className="flex flex-wrap gap-6 md:col-span-2">
@@ -410,7 +442,7 @@ export function ProjectsClient({ projects, onUpdate, onReset, onSaveOrder, onSyn
                       </button>
                       <button
                         type="submit"
-                        formAction={onReset}
+                        formAction={resetWithToast}
                         className="rounded-xl border border-[color:var(--border)] bg-transparent px-4 py-2 text-sm font-semibold text-[color:var(--fg)] hover:bg-[color:var(--surface-2)]"
                       >
                         Reset

@@ -1,8 +1,9 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { useMemo, useState, useCallback } from 'react'
 import { Badge } from '@/components/ui/Badge'
 import { RichTextEditor } from '@/components/ui/RichTextEditor'
+import { useToast } from '@/components/ui/Toast'
 
 export type AdminBlogPost = {
   id: string
@@ -102,6 +103,24 @@ function ChipsEditor({
 }
 
 export function BlogEditorClient({ posts, onSave, onDelete }: Props) {
+  const { show } = useToast()
+
+  const saveWithToast = useCallback(
+    async (formData: FormData) => {
+      await onSave(formData)
+      show('Blog post saved!')
+    },
+    [onSave, show],
+  )
+
+  const deleteWithToast = useCallback(
+    async (formData: FormData) => {
+      await onDelete(formData)
+      show('Blog post deleted!')
+    },
+    [onDelete, show],
+  )
+
   const [query, setQuery] = useState('')
   const [selectedId, setSelectedId] = useState<string | 'new'>(posts[0]?.id ?? 'new')
 
@@ -186,7 +205,7 @@ export function BlogEditorClient({ posts, onSave, onDelete }: Props) {
       {draft ? (
         <div className="grid gap-4 lg:grid-cols-2">
           <div className="rounded-2xl border border-[color:var(--border)] bg-[color:var(--surface)] p-4">
-            <form action={onSave} className="space-y-4">
+            <form action={saveWithToast} className="space-y-4">
               <input type="hidden" name="id" value={draft.id} />
 
               <div className="grid gap-4 md:grid-cols-2">
@@ -286,7 +305,7 @@ export function BlogEditorClient({ posts, onSave, onDelete }: Props) {
                 </button>
 
                 {draft.id ? (
-                  <form action={onDelete}>
+                  <form action={deleteWithToast}>
                     <input type="hidden" name="id" value={draft.id} />
                     <button
                       type="submit"

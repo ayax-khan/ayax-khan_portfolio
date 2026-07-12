@@ -1,3 +1,4 @@
+import { redirect } from 'next/navigation'
 import { prisma } from '@/lib/db'
 import { Card } from '@/components/ui/Card'
 import { upsertSetting } from './actions'
@@ -51,6 +52,7 @@ export default async function AdminSettingsPage() {
               const value = String(formData.get(s.key) ?? '')
               await upsertSetting({ key: s.key, value })
             }
+            redirect('/admin/settings?saved=1')
           }}
           className="mt-3 space-y-4"
         >

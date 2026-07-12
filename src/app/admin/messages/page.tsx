@@ -1,3 +1,4 @@
+import { redirect } from 'next/navigation'
 import { prisma } from '@/lib/db'
 import { Card } from '@/components/ui/Card'
 import { deleteMessage } from './actions'
@@ -54,6 +55,7 @@ export default async function AdminMessagesPage() {
                 action={async () => {
                   'use server'
                   await deleteMessage(m.id)
+                  redirect('/admin/messages?saved=1')
                 }}
               >
                 <button

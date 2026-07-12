@@ -977,3 +977,9 @@ body {
 .rich-editor [contenteditable] li { margin: 0.25rem 0; }
 .rich-editor [contenteditable] a { color: var(--fg); text-decoration: underline; }
 .rich-editor [contenteditable] hr { margin: 1.5rem 0; border-color: var(--border); }
+
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-slide-up { animation: slide-up 0.25s cubic-bezier(.2,.9,.2,1); }

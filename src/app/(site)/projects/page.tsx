@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { Card } from '@/components/ui/Card'
 import { TrackedLinkButton } from '@/components/analytics/TrackedLinkButton'
 import { LinkButton } from '@/components/ui/LinkButton'
@@ -80,53 +81,59 @@ export default async function ProjectsPage({
       ) : (
         <div className="grid gap-4 md:grid-cols-2">
           {filteredProjects.map((p) => (
-            <Card
-              key={p.fullName}
-              title={p.name}
-              footer={
-                <div className="flex flex-wrap gap-2">
-                  <LinkButton href={`/projects/${p.slug}`} variant="secondary">
-                    Details
-                  </LinkButton>
-                  <TrackedLinkButton
-                    href={p.repoUrl}
-                    variant="ghost"
-                    target="_blank"
-                    rel="noreferrer"
-                    analyticsMeta={{ kind: 'github_repo', repoFullName: p.fullName, slug: p.slug }}
-                  >
-                    GitHub
-                  </TrackedLinkButton>
-                  {p.demoUrl ? (
+            <div key={p.fullName} className="group relative">
+              <Link
+                href={`/projects/${p.slug}`}
+                className="absolute inset-0 z-10 rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--selection)]"
+                aria-label={p.name}
+              />
+              <Card
+                title={p.name}
+                footer={
+                  <div className="relative z-20 flex flex-wrap gap-2">
+                    <LinkButton href={`/projects/${p.slug}`} variant="secondary">
+                      Details
+                    </LinkButton>
                     <TrackedLinkButton
-                      href={p.demoUrl}
+                      href={p.repoUrl}
                       variant="ghost"
                       target="_blank"
                       rel="noreferrer"
-                      analyticsMeta={{ kind: 'demo', repoFullName: p.fullName, slug: p.slug }}
+                      analyticsMeta={{ kind: 'github_repo', repoFullName: p.fullName, slug: p.slug }}
                     >
-                      Live demo
+                      GitHub
                     </TrackedLinkButton>
-                  ) : null}
-                </div>
-              }
-            >
-              <p>{p.description ?? '—'}</p>
+                    {p.demoUrl ? (
+                      <TrackedLinkButton
+                        href={p.demoUrl}
+                        variant="ghost"
+                        target="_blank"
+                        rel="noreferrer"
+                        analyticsMeta={{ kind: 'demo', repoFullName: p.fullName, slug: p.slug }}
+                      >
+                        Live demo
+                      </TrackedLinkButton>
+                    ) : null}
+                  </div>
+                }
+              >
+                <p>{p.description ?? '—'}</p>
 
-              {p.tags.length ? (
-                <div className="mt-3 flex flex-wrap gap-2">
-                  {p.tags.map((t) => (
-                    <Badge key={t} variant="muted">
-                      {t}
-                    </Badge>
-                  ))}
-                </div>
-              ) : null}
+                {p.tags.length ? (
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    {p.tags.map((t) => (
+                      <Badge key={t} variant="muted">
+                        {t}
+                      </Badge>
+                    ))}
+                  </div>
+                ) : null}
 
-              <p className="mt-3 text-xs text-[color:var(--muted)]">
-                {p.language ?? 'N/A'} · ★ {p.stars} · Updated {new Date(p.updatedAt).toISOString().slice(0, 10)}
-              </p>
-            </Card>
+                <p className="mt-3 text-xs text-[color:var(--muted)]">
+                  {p.language ?? 'N/A'} · ★ {p.stars} · Updated {new Date(p.updatedAt).toISOString().slice(0, 10)}
+                </p>
+              </Card>
+            </div>
           ))}
         </div>
       )}

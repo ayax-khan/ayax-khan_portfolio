@@ -10,7 +10,6 @@ import { ScrollProgress } from '@/components/motion/ScrollProgress'
 import { RotatingProjectStack } from '@/components/motion/RotatingProjectStack'
 import { getProjectsFromGithub } from '@/lib/github/repos'
 import { listPublishedPosts } from '@/lib/blog'
-import { socialLinks } from '@/lib/site'
 import { getPublicProfile } from '@/lib/publicProfile'
 
 export const metadata = {
@@ -149,11 +148,6 @@ export default async function HomePage() {
               <SectionHeading
                 title="Featured Projects"
                 description="Work-first. A curated selection synced from GitHub with portfolio-specific overrides."
-                action={
-                  <Link href="/projects" className="text-sm text-[color:var(--muted)] hover:text-[color:var(--fg)]">
-                    See all
-                  </Link>
-                }
               />
             </ScrollReveal>
 

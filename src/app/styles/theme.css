@@ -1,35 +1,62 @@
 :root,
 :root[data-theme='light'] {
-  --bg: #faf9f7;
-  --fg: #1c1917;
-  --muted: rgba(28, 25, 23, 0.58);
-  --border: rgba(28, 25, 23, 0.10);
-  --surface: rgba(28, 25, 23, 0.03);
-  --surface-2: rgba(28, 25, 23, 0.06);
-  --selection: rgba(180, 83, 9, 0.14);
-  --accent: #b45309;
-  --accent-soft: rgba(180, 83, 9, 0.10);
+  --bg: #ffffff;
+  --bg-secondary: #fafafa;
+  --fg: #111111;
+  --muted: #666666;
+  --muted-2: #999999;
+  --border: #eaeaea;
+  --surface: #ffffff;
+  --surface-2: #f5f5f5;
+  --selection: rgba(37, 99, 235, 0.12);
+  --accent: #2563eb;
+  --accent-soft: rgba(37, 99, 235, 0.08);
+  --accent-hover: #1d4ed8;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.08);
+  --shadow-xl: 0 20px 60px rgba(0, 0, 0, 0.10);
+  --radius-sm: 12px;
+  --radius-md: 18px;
+  --radius-lg: 24px;
+  --nav-height: 64px;
 }
 
 :root[data-theme='navy'] {
-  --bg: #071125;
-  --fg: #e7eefc;
-  --muted: rgba(231, 238, 252, 0.72);
-  --border: rgba(231, 238, 252, 0.14);
-  --surface: rgba(231, 238, 252, 0.07);
-  --surface-2: rgba(231, 238, 252, 0.12);
-  --selection: rgba(96, 165, 250, 0.25);
-  --accent: #60a5fa;
-  --accent-soft: rgba(96, 165, 250, 0.12);
+  --bg: #0a0a0f;
+  --bg-secondary: #111118;
+  --fg: #f0f0f5;
+  --muted: #8888a0;
+  --muted-2: #666680;
+  --border: #1e1e2a;
+  --surface: #12121a;
+  --surface-2: #1a1a26;
+  --selection: rgba(37, 99, 235, 0.25);
+  --accent: #3b82f6;
+  --accent-soft: rgba(59, 130, 246, 0.10);
+  --accent-hover: #60a5fa;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.4);
+  --shadow-xl: 0 20px 60px rgba(0, 0, 0, 0.5);
+  --nav-height: 64px;
 }
 
 @theme inline {
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --color-bg: var(--bg);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-surface: var(--surface);
+  --color-accent: var(--accent);
 }
 
 body {
   background: var(--bg);
   color: var(--fg);
   font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }

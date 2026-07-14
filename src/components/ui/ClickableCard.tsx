@@ -1,30 +1,28 @@
 'use client'
 
-import { type ReactNode, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
+import { type ReactNode, type MouseEvent } from 'react'
 
 type Props = {
   href: string
-  ariaLabel: string
   children: ReactNode
+  ariaLabel?: string
+  className?: string
 }
 
-export function ClickableCard({ href, ariaLabel, children }: Props) {
+export function ClickableCard({ href, children, ariaLabel, className }: Props) {
   const router = useRouter()
 
-  const onClick = useCallback(() => {
+  const onClick = (e: MouseEvent<HTMLDivElement>) => {
+    if (e.metaKey || e.ctrlKey) return
     router.push(href)
-  }, [href, router])
+  }
 
-  const onKeyDown = useCallback(
-    (e: React.KeyboardEvent) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault()
-        router.push(href)
-      }
-    },
-    [href, router],
-  )
+  const onKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      router.push(href)
+    }
+  }
 
   return (
     <div
@@ -33,7 +31,7 @@ export function ClickableCard({ href, ariaLabel, children }: Props) {
       aria-label={ariaLabel}
       onClick={onClick}
       onKeyDown={onKeyDown}
-      className="group cursor-pointer rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--selection)]"
+      className={`cursor-pointer ${className ?? ''}`}
     >
       {children}
     </div>

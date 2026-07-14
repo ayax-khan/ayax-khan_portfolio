@@ -5,20 +5,27 @@ type Props = {
   children: ReactNode
   footer?: ReactNode
   className?: string
+  hover?: boolean
 }
 
 export function Card(props: Props) {
+  const hoverClass = props.hover !== false
+    ? 'hover:-translate-y-1 hover:shadow-lg transition-all duration-300'
+    : ''
+
   return (
     <div
-      className={`portfolio-card rounded-2xl border border-[color:var(--border)] bg-[color:var(--surface)] p-5 transition-[transform,box-shadow,border-color,background-color] duration-300 ease-[cubic-bezier(.2,.9,.2,1)] hover:-translate-y-0.5 hover:scale-[1.01] hover:border-[color:color-mix(in_srgb,var(--border),var(--fg) 20%)] ${
-        props.className ?? ''
-      }`}
+      className={`rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--surface)] p-6 shadow-sm ${hoverClass} ${props.className ?? ''}`}
     >
-      {props.title ? <h3 className="text-base font-semibold tracking-tight text-[color:var(--fg)]">{props.title}</h3> : null}
-      <div className={props.title ? 'mt-2 text-sm text-[color:var(--muted)]' : 'text-sm text-[color:var(--muted)]'}>
+      {props.title ? (
+        <h3 className="text-xl font-semibold tracking-tight text-[var(--fg)]">
+          {props.title}
+        </h3>
+      ) : null}
+      <div className={props.title ? 'mt-3 text-[15px] leading-relaxed text-[var(--muted)]' : 'text-[15px] leading-relaxed text-[var(--muted)]'}>
         {props.children}
       </div>
-      {props.footer ? <div className="mt-4">{props.footer}</div> : null}
+      {props.footer ? <div className="mt-5">{props.footer}</div> : null}
     </div>
   )
 }

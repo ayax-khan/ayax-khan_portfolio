@@ -1,21 +1,20 @@
 import type { Metadata } from 'next'
-import { Geist, Geist_Mono } from 'next/font/google'
+import { Inter, JetBrains_Mono } from 'next/font/google'
 import './globals.css'
 import { ThemeScript } from '@/components/layout/ThemeScript'
+import { site } from '@/lib/site'
 
-const geistSans = Geist({
+const inter = Inter({
   variable: '--font-geist-sans',
   subsets: ['latin'],
   display: 'swap',
 })
 
-const geistMono = Geist_Mono({
+const jetbrainsMono = JetBrains_Mono({
   variable: '--font-geist-mono',
   subsets: ['latin'],
   display: 'swap',
 })
-
-import { site } from '@/lib/site'
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.siteUrl),
@@ -54,7 +53,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ThemeScript />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} min-h-full bg-[color:var(--bg)] text-[color:var(--fg)] antialiased selection:bg-[color:var(--selection)] selection:text-[color:var(--fg)]`}
+        className={`${inter.variable} ${jetbrainsMono.variable} min-h-full bg-[color:var(--bg)] text-[color:var(--fg)] antialiased selection:bg-[color:var(--selection)] selection:text-[color:var(--fg)]`}
       >
         {children}
       </body>

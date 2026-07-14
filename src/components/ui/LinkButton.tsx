@@ -1,33 +1,33 @@
 import Link from 'next/link'
 import { type ComponentProps } from 'react'
 
-type ButtonVariant = 'primary' | 'secondary' | 'ghost'
+type Variant = 'primary' | 'secondary' | 'ghost'
+type Size = 'default' | 'lg'
 
 type Props = {
-  variant?: ButtonVariant
+  variant?: Variant
+  size?: Size
   className?: string
-  href: string
-} & Omit<ComponentProps<typeof Link>, 'href' | 'className'>
+} & Omit<ComponentProps<typeof Link>, 'className'>
 
-function classes(variant: ButtonVariant) {
-  switch (variant) {
-    case 'secondary':
-      return 'bg-[color:var(--surface-2)] text-[color:var(--fg)] ring-1 ring-[color:var(--border)] hover:bg-[color:var(--surface)]'
-    case 'ghost':
-      return 'bg-transparent text-[color:var(--fg)] hover:bg-[color:var(--surface-2)]'
-    default:
-      return 'bg-[color:var(--fg)] text-[color:var(--bg)] hover:opacity-90'
-  }
+const variantClasses: Record<Variant, string> = {
+  primary:
+    'bg-[var(--accent)] text-white shadow-sm hover:bg-[var(--accent-hover)] hover:shadow-md',
+  secondary:
+    'bg-[var(--surface)] text-[var(--fg)] ring-1 ring-[var(--border)] hover:bg-[var(--surface-2)] hover:ring-[var(--muted-2)]',
+  ghost:
+    'bg-transparent text-[var(--muted)] hover:text-[var(--fg)] hover:bg-[var(--surface-2)]',
 }
 
-export function LinkButton(props: Props) {
-  const variant = props.variant ?? 'primary'
-  const { href, className, ...rest } = props
+const sizeClasses: Record<Size, string> = {
+  default: 'px-5 py-2.5 text-sm',
+  lg: 'px-7 py-3 text-base',
+}
 
+export function LinkButton({ variant = 'primary', size = 'default', className, ...rest }: Props) {
   return (
     <Link
-      href={href}
-      className={`inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--selection)] ${classes(variant)} ${className ?? ''}`}
+      className={`inline-flex items-center justify-center gap-2 rounded-xl font-semibold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--bg)] ${variantClasses[variant]} ${sizeClasses[size]} ${className ?? ''}`}
       {...rest}
     />
   )

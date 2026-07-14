@@ -61,11 +61,11 @@ export function Hero({ name, title, bio, imageUrl, github, linkedin }: Props) {
 
             <ScrollReveal delay={0.1} y={20}>
               <h1 className="text-3xl font-bold leading-tight tracking-tight sm:text-4xl md:text-5xl">
-                Hi, I&apos;m <span className="text-[var(--accent)]">{name.split(' ')[0]}</span>.
+                Hi, I&apos;m <span className="text-[var(--accent)]">{name}</span>.
                 <br />
-                <span className="text-[var(--fg)]">AI Engineer & Full Stack Developer</span>
+                <span className="text-[var(--fg)]">AI Engineer</span>
                 <br />
-                <span className="text-[var(--muted)]">building intelligent products.</span>
+                <span className="text-[var(--muted)]">building Intelligent products.</span>
               </h1>
             </ScrollReveal>
 
@@ -137,12 +137,12 @@ export function Hero({ name, title, bio, imageUrl, github, linkedin }: Props) {
             <ScrollReveal delay={0.15} scale={1} y={0}>
               <div className="relative">
                 <div className="absolute inset-0 rounded-[var(--radius-lg)] bg-[var(--accent-soft)] opacity-60 blur-3xl" />
-                <div className="relative h-[220px] w-[220px] overflow-hidden rounded-[var(--radius-lg)] border border-[var(--border)] shadow-lg sm:h-[260px] sm:w-[260px]">
+                <div className="relative h-[260px] w-[220px] overflow-hidden rounded-[var(--radius-lg)] border border-[var(--border)] shadow-lg sm:h-[320px] sm:w-[260px]">
                   <Image
                     src={imageUrl || '/ayaz.png'}
                     alt={name}
                     fill
-                    className="object-cover"
+                    className="object-contain"
                     sizes="(max-width: 640px) 220px, 260px"
                     priority
                   />

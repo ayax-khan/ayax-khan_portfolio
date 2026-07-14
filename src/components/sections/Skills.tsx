@@ -3,16 +3,14 @@
 import {
   Brain,
   Cpu,
-  Database,
   Cloud,
   Shield,
   GitBranch,
-  Globe,
   Code2,
+  Eye,
 } from 'lucide-react'
 import { ScrollReveal } from '@/components/motion/ScrollReveal'
 import { SectionHeading } from '@/components/ui/SectionHeading'
-import { StaggerContainer, StaggerItem } from '@/components/motion/StaggerContainer'
 
 type SkillCategory = {
   name: string
@@ -32,6 +30,16 @@ const skillCategories: SkillCategory[] = [
     ],
   },
   {
+    name: 'Computer Vision',
+    icon: Eye,
+    skills: [
+      { name: 'OpenCV', years: '2+ yrs', level: 'Advanced' },
+      { name: 'YOLO', years: '1+ yr', level: 'Intermediate' },
+      { name: 'Image Segmentation', years: '1+ yr', level: 'Intermediate' },
+      { name: 'OCR Systems', years: '1+ yr', level: 'Intermediate' },
+    ],
+  },
+  {
     name: 'Backend & API',
     icon: Code2,
     skills: [
@@ -39,26 +47,6 @@ const skillCategories: SkillCategory[] = [
       { name: 'FastAPI', years: '3+ yrs', level: 'Advanced' },
       { name: 'Node.js', years: '3+ yrs', level: 'Advanced' },
       { name: 'Next.js', years: '2+ yrs', level: 'Advanced' },
-    ],
-  },
-  {
-    name: 'Frontend',
-    icon: Globe,
-    skills: [
-      { name: 'React', years: '3+ yrs', level: 'Advanced' },
-      { name: 'TypeScript', years: '3+ yrs', level: 'Advanced' },
-      { name: 'Tailwind CSS', years: '2+ yrs', level: 'Advanced' },
-      { name: 'Framer Motion', years: '1+ yr', level: 'Intermediate' },
-    ],
-  },
-  {
-    name: 'Database & Storage',
-    icon: Database,
-    skills: [
-      { name: 'PostgreSQL', years: '3+ yrs', level: 'Advanced' },
-      { name: 'Supabase', years: '2+ yrs', level: 'Advanced' },
-      { name: 'Prisma', years: '2+ yrs', level: 'Advanced' },
-      { name: 'Redis', years: '1+ yr', level: 'Intermediate' },
     ],
   },
   {
@@ -96,33 +84,34 @@ export function Skills() {
           />
         </ScrollReveal>
 
-        <StaggerContainer className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-10 flex gap-4 overflow-x-auto pb-4 scrollbar-none">
           {skillCategories.map((category) => {
             const Icon = category.icon
             return (
-              <StaggerItem key={category.name}>
-                <div className="group rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--surface)] p-5 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md">
-                  <div className="mb-3 flex items-center gap-2.5">
-                    <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[var(--accent-soft)] text-[var(--accent)]">
-                      <Icon size={18} />
-                    </div>
-                    <h3 className="text-base font-semibold text-[var(--fg)]">{category.name}</h3>
+              <div
+                key={category.name}
+                className="min-w-[260px] flex-shrink-0 rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--surface)] p-5 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md"
+              >
+                <div className="mb-3 flex items-center gap-2.5">
+                  <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[var(--accent-soft)] text-[var(--accent)]">
+                    <Icon size={18} />
                   </div>
-                  <div className="space-y-2.5">
-                    {category.skills.map((skill) => (
-                      <div key={skill.name} className="flex items-center justify-between">
-                        <span className="text-sm text-[var(--fg)]">{skill.name}</span>
-                        <span className="text-[11px] text-[var(--muted-2)]">
-                          {skill.years}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
+                  <h3 className="text-base font-semibold text-[var(--fg)]">{category.name}</h3>
                 </div>
-              </StaggerItem>
+                <div className="space-y-2.5">
+                  {category.skills.map((skill) => (
+                    <div key={skill.name} className="flex items-center justify-between">
+                      <span className="text-sm text-[var(--fg)]">{skill.name}</span>
+                      <span className="text-[11px] text-[var(--muted-2)]">
+                        {skill.years}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
             )
           })}
-        </StaggerContainer>
+        </div>
       </div>
     </section>
   )

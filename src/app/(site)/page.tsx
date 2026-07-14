@@ -46,9 +46,9 @@ export default async function HomePage() {
         linkedin={socialMap['LinkedIn']}
       />
 
-      <Skills />
       <ProjectsSection projects={featured} />
       <ExperienceTimeline experiences={experiences} />
+      <Skills />
       <Research />
       <BlogSection posts={posts} />
       <Testimonials />

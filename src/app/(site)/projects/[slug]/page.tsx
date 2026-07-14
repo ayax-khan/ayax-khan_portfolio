@@ -34,17 +34,17 @@ export default async function ProjectDetailPage({
   ])
 
   return (
-    <div className="mx-auto max-w-4xl px-6 pt-32 pb-24">
+    <div className="mx-auto max-w-4xl px-6 pt-28 pb-20">
       <Link
         href="/projects"
-        className="mb-8 inline-flex items-center gap-1.5 text-sm text-[var(--muted)] transition-colors hover:text-[var(--fg)]"
+        className="mb-6 inline-flex items-center gap-1.5 text-sm text-[var(--muted)] transition-colors hover:text-[var(--fg)]"
       >
         <ArrowLeft size={16} />
         Back to projects
       </Link>
 
-      <header className="space-y-6">
-        <div className="flex flex-wrap items-center gap-2">
+      <header className="space-y-5">
+        <div className="flex flex-wrap items-center gap-1.5">
           <Badge variant="muted">{project.language ?? 'N/A'}</Badge>
           <Badge variant="muted">★ {project.stars}</Badge>
           <Badge variant="muted">{commitCount} commits</Badge>
@@ -55,18 +55,18 @@ export default async function ProjectDetailPage({
         </div>
 
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-[var(--fg)] sm:text-4xl">{project.name}</h1>
-          <p className="mt-3 text-lg leading-relaxed text-[var(--muted)]">{project.description ?? '—'}</p>
+          <h1 className="text-2xl font-bold tracking-tight text-[var(--fg)] sm:text-3xl">{project.name}</h1>
+          <p className="mt-2 text-base leading-relaxed text-[var(--muted)]">{project.description ?? '—'}</p>
         </div>
 
-        <div className="flex flex-wrap gap-3">
+        <div className="flex flex-wrap gap-2.5">
           <a
             href={project.repoUrl}
             target="_blank"
             rel="noreferrer"
-            className="inline-flex items-center gap-2 rounded-xl bg-[var(--accent)] px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-[var(--accent-hover)] hover:shadow-md"
+            className="inline-flex items-center gap-2 rounded-xl bg-[var(--accent)] px-4 py-2 text-sm font-semibold text-white shadow-sm transition-all hover:bg-[var(--accent-hover)] hover:shadow-md"
           >
-            <GithubIcon size={16} />
+            <GithubIcon size={15} />
             GitHub Repo
           </a>
           {project.demoUrl ? (
@@ -74,22 +74,22 @@ export default async function ProjectDetailPage({
               href={project.demoUrl}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center gap-2 rounded-xl border border-[var(--border)] bg-[var(--surface)] px-5 py-2.5 text-sm font-semibold text-[var(--fg)] transition-all hover:bg-[var(--surface-2)] hover:shadow-sm"
+              className="inline-flex items-center gap-2 rounded-xl border border-[var(--border)] bg-[var(--surface)] px-4 py-2 text-sm font-semibold text-[var(--fg)] transition-all hover:bg-[var(--surface-2)] hover:shadow-sm"
             >
-              <ExternalLink size={16} />
+              <ExternalLink size={15} />
               Live Demo
             </a>
           ) : null}
         </div>
       </header>
 
-      <div className="mt-12">
+      <div className="mt-10">
         {readme ? (
-          <div className="rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--surface)] p-6 shadow-sm sm:p-10">
+          <div className="rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--surface)] p-5 shadow-sm sm:p-8">
             <Markdown content={readme} />
           </div>
         ) : (
-          <div className="grid gap-6 md:grid-cols-2">
+          <div className="grid gap-5 md:grid-cols-2">
             <Card title="Overview">
               <p>No README found for this repository.</p>
             </Card>

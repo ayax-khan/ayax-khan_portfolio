@@ -27,7 +27,7 @@ const testimonials = [
 
 export function Testimonials() {
   return (
-    <section className="py-24">
+    <section className="py-16">
       <div className="mx-auto max-w-5xl px-6">
         <ScrollReveal>
           <SectionHeading
@@ -38,13 +38,13 @@ export function Testimonials() {
           />
         </ScrollReveal>
 
-        <div className="mt-12 grid gap-6 md:grid-cols-3">
+        <div className="mt-8 grid gap-5 md:grid-cols-3">
           {testimonials.map((t, idx) => (
             <ScrollReveal key={t.name} delay={0.1 * idx}>
-              <div className="rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--surface)] p-6 shadow-sm">
-                <Quote size={24} className="text-[var(--accent)] opacity-40" />
-                <p className="mt-4 text-sm leading-relaxed text-[var(--muted)]">&ldquo;{t.content}&rdquo;</p>
-                <div className="mt-6 border-t border-[var(--border)] pt-4">
+              <div className="rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--surface)] p-5 shadow-sm">
+                <Quote size={20} className="text-[var(--accent)] opacity-40" />
+                <p className="mt-3 text-sm leading-relaxed text-[var(--muted)]">&ldquo;{t.content}&rdquo;</p>
+                <div className="mt-5 border-t border-[var(--border)] pt-3">
                   <p className="text-sm font-semibold text-[var(--fg)]">{t.name}</p>
                   <p className="text-xs text-[var(--muted-2)]">{t.role}</p>
                 </div>

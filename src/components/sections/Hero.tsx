@@ -33,16 +33,14 @@ const techIcons = [
 
 export function Hero({ name, title, bio, imageUrl, github, linkedin }: Props) {
   return (
-    <section className="relative min-h-[90vh] overflow-hidden pt-24">
-      {/* Background Grid */}
+    <section className="relative overflow-hidden pt-20 pb-12 sm:pb-16">
       <div className="pointer-events-none absolute inset-0 grid-dot-pattern opacity-[0.04]" />
 
-      {/* Floating Tech Icons */}
       <div className="pointer-events-none absolute inset-0 hidden lg:block">
         {techIcons.map((tech) => (
           <FadeIn key={tech.label} delay={Number.parseFloat(tech.delay)}>
             <div
-              className="animate-float absolute flex h-10 w-10 items-center justify-center rounded-xl border border-[var(--border)] bg-[var(--surface)] text-sm shadow-sm"
+              className="animate-float absolute flex h-8 w-8 items-center justify-center rounded-xl border border-[var(--border)] bg-[var(--surface)] text-xs shadow-sm"
               style={{ left: tech.x, top: tech.y }}
             >
               {tech.icon}
@@ -51,20 +49,18 @@ export function Hero({ name, title, bio, imageUrl, github, linkedin }: Props) {
         ))}
       </div>
 
-      <div className="relative mx-auto max-w-5xl px-6 py-16 sm:py-24">
-        <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
-          {/* Left Content */}
+      <div className="relative mx-auto max-w-5xl px-6">
+        <div className="grid items-center gap-8 lg:grid-cols-12 lg:gap-12">
           <div className="lg:col-span-7">
-            {/* Availability Badge */}
             <ScrollReveal delay={0} y={10}>
-              <span className="mb-6 inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-medium text-emerald-700">
+              <span className="mb-4 inline-flex items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-0.5 text-[11px] font-medium text-emerald-700">
                 <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
                 Available for AI Projects
               </span>
             </ScrollReveal>
 
             <ScrollReveal delay={0.1} y={20}>
-              <h1 className="text-4xl font-bold leading-tight tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
+              <h1 className="text-3xl font-bold leading-tight tracking-tight sm:text-4xl md:text-5xl">
                 Hi, I&apos;m <span className="text-[var(--accent)]">{name.split(' ')[0]}</span>.
                 <br />
                 <span className="text-[var(--fg)]">AI Engineer & Full Stack Developer</span>
@@ -74,40 +70,40 @@ export function Hero({ name, title, bio, imageUrl, github, linkedin }: Props) {
             </ScrollReveal>
 
             <ScrollReveal delay={0.2} y={20}>
-              <p className="mt-6 max-w-xl text-lg leading-relaxed text-[var(--muted)] sm:text-xl">
+              <p className="mt-4 max-w-xl text-base leading-relaxed text-[var(--muted)] sm:text-lg">
                 {bio}
               </p>
             </ScrollReveal>
 
             <ScrollReveal delay={0.3} y={20}>
-              <div className="mt-8 flex flex-wrap items-center gap-4">
+              <div className="mt-6 flex flex-wrap items-center gap-3">
                 <a
                   href="/projects"
-                  className="inline-flex items-center gap-2 rounded-xl bg-[var(--accent)] px-6 py-3 text-base font-semibold text-white shadow-sm transition-all hover:bg-[var(--accent-hover)] hover:shadow-md"
+                  className="inline-flex items-center gap-2 rounded-xl bg-[var(--accent)] px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-[var(--accent-hover)] hover:shadow-md"
                 >
                   View Projects
-                  <ArrowRight size={18} />
+                  <ArrowRight size={16} />
                 </a>
                 <a
                   href="/resume"
-                  className="inline-flex items-center gap-2 rounded-xl border border-[var(--border)] bg-[var(--surface)] px-6 py-3 text-base font-semibold text-[var(--fg)] transition-all hover:bg-[var(--surface-2)] hover:shadow-sm"
+                  className="inline-flex items-center gap-2 rounded-xl border border-[var(--border)] bg-[var(--surface)] px-5 py-2.5 text-sm font-semibold text-[var(--fg)] transition-all hover:bg-[var(--surface-2)] hover:shadow-sm"
                 >
-                  <Download size={18} />
+                  <Download size={16} />
                   Download Resume
                 </a>
               </div>
             </ScrollReveal>
 
             <ScrollReveal delay={0.4} y={20}>
-              <div className="mt-6 flex items-center gap-4">
+              <div className="mt-4 flex items-center gap-4">
                 {github ? (
                   <a
                     href={github}
                     target="_blank"
                     rel="noreferrer"
-                    className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-[var(--muted)] transition-colors hover:text-[var(--fg)]"
+                    className="flex items-center gap-2 rounded-lg px-2 py-1.5 text-sm text-[var(--muted)] transition-colors hover:text-[var(--fg)]"
                   >
-                    <GithubIcon />
+                    <GithubIcon size={18} />
                     <span className="hidden sm:inline">GitHub</span>
                   </a>
                 ) : null}
@@ -116,40 +112,38 @@ export function Hero({ name, title, bio, imageUrl, github, linkedin }: Props) {
                     href={linkedin}
                     target="_blank"
                     rel="noreferrer"
-                    className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-[var(--muted)] transition-colors hover:text-[var(--fg)]"
+                    className="flex items-center gap-2 rounded-lg px-2 py-1.5 text-sm text-[var(--muted)] transition-colors hover:text-[var(--fg)]"
                   >
-                    <LinkedinIcon />
+                    <LinkedinIcon size={18} />
                     <span className="hidden sm:inline">LinkedIn</span>
                   </a>
                 ) : null}
               </div>
             </ScrollReveal>
 
-            {/* Stats */}
             <ScrollReveal delay={0.5} y={20}>
-              <div className="mt-10 grid grid-cols-4 gap-4 border-t border-[var(--border)] pt-8">
+              <div className="mt-8 grid grid-cols-4 gap-4 border-t border-[var(--border)] pt-6">
                 {stats.map((stat) => (
                   <div key={stat.label}>
-                    <div className="text-xl font-bold text-[var(--fg)] sm:text-2xl">{stat.value}</div>
-                    <div className="mt-0.5 text-xs text-[var(--muted-2)] sm:text-sm">{stat.label}</div>
+                    <div className="text-lg font-bold text-[var(--fg)] sm:text-xl">{stat.value}</div>
+                    <div className="mt-0.5 text-xs text-[var(--muted-2)]">{stat.label}</div>
                   </div>
                 ))}
               </div>
             </ScrollReveal>
           </div>
 
-          {/* Right - Profile Image */}
           <div className="flex justify-center lg:col-span-5">
             <ScrollReveal delay={0.15} scale={1} y={0}>
               <div className="relative">
                 <div className="absolute inset-0 rounded-[var(--radius-lg)] bg-[var(--accent-soft)] opacity-60 blur-3xl" />
-                <div className="relative h-[280px] w-[280px] overflow-hidden rounded-[var(--radius-lg)] border border-[var(--border)] shadow-lg sm:h-[340px] sm:w-[340px]">
+                <div className="relative h-[220px] w-[220px] overflow-hidden rounded-[var(--radius-lg)] border border-[var(--border)] shadow-lg sm:h-[260px] sm:w-[260px]">
                   <Image
                     src={imageUrl || '/ayaz.png'}
                     alt={name}
                     fill
                     className="object-cover"
-                    sizes="(max-width: 640px) 280px, 340px"
+                    sizes="(max-width: 640px) 220px, 260px"
                     priority
                   />
                 </div>

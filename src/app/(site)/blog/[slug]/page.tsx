@@ -20,25 +20,25 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   if (!post || !post.published) return notFound()
 
   return (
-    <article className="mx-auto max-w-3xl px-6 pt-32 pb-24">
+    <article className="mx-auto max-w-3xl px-6 pt-28 pb-20">
       <Link
         href="/blog"
-        className="mb-8 inline-flex items-center gap-1.5 text-sm text-[var(--muted)] transition-colors hover:text-[var(--fg)]"
+        className="mb-6 inline-flex items-center gap-1.5 text-sm text-[var(--muted)] transition-colors hover:text-[var(--fg)]"
       >
         <ArrowLeft size={16} />
         Back to blog
       </Link>
 
       <header>
-        <h1 className="text-3xl font-bold tracking-tight text-[var(--fg)] sm:text-4xl">{post.title}</h1>
+        <h1 className="text-2xl font-bold tracking-tight text-[var(--fg)] sm:text-3xl">{post.title}</h1>
         {post.summary ? (
-          <p className="mt-4 text-lg leading-relaxed text-[var(--muted)]">{post.summary}</p>
+          <p className="mt-3 text-base leading-relaxed text-[var(--muted)]">{post.summary}</p>
         ) : null}
 
-        <div className="mt-6 flex flex-wrap items-center gap-3">
+        <div className="mt-4 flex flex-wrap items-center gap-2">
           {post.publishedAt ? (
-            <span className="flex items-center gap-1.5 text-sm text-[var(--muted-2)]">
-              <Calendar size={14} />
+            <span className="flex items-center gap-1.5 text-xs text-[var(--muted-2)]">
+              <Calendar size={13} />
               {new Date(post.publishedAt).toLocaleDateString('en-US', {
                 month: 'long',
                 day: 'numeric',
@@ -52,7 +52,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         </div>
       </header>
 
-      <div className="mt-10 border-t border-[var(--border)] pt-10">
+      <div className="mt-8 border-t border-[var(--border)] pt-8">
         <div
           className="blog-content prose prose-lg max-w-none"
           style={{

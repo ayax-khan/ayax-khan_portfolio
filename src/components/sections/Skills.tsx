@@ -85,34 +85,34 @@ const skillCategories: SkillCategory[] = [
 
 export function Skills() {
   return (
-    <section className="py-24">
+    <section className="py-16">
       <div className="mx-auto max-w-5xl px-6">
         <ScrollReveal>
           <SectionHeading
             subtitle="Expertise"
             title="Skills & Technologies"
-            description="A comprehensive overview of the technologies I work with daily to build production-ready AI systems."
+            description="Technologies I work with daily to build production-ready AI systems."
             align="center"
           />
         </ScrollReveal>
 
-        <StaggerContainer className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <StaggerContainer className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {skillCategories.map((category) => {
             const Icon = category.icon
             return (
               <StaggerItem key={category.name}>
-                <div className="group rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--surface)] p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
-                  <div className="mb-4 flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--accent-soft)] text-[var(--accent)]">
-                      <Icon size={20} />
+                <div className="group rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--surface)] p-5 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md">
+                  <div className="mb-3 flex items-center gap-2.5">
+                    <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[var(--accent-soft)] text-[var(--accent)]">
+                      <Icon size={18} />
                     </div>
-                    <h3 className="text-lg font-semibold text-[var(--fg)]">{category.name}</h3>
+                    <h3 className="text-base font-semibold text-[var(--fg)]">{category.name}</h3>
                   </div>
-                  <div className="space-y-3">
+                  <div className="space-y-2.5">
                     {category.skills.map((skill) => (
                       <div key={skill.name} className="flex items-center justify-between">
-                        <span className="text-sm font-medium text-[var(--fg)]">{skill.name}</span>
-                        <span className="text-xs text-[var(--muted-2)]">
+                        <span className="text-sm text-[var(--fg)]">{skill.name}</span>
+                        <span className="text-[11px] text-[var(--muted-2)]">
                           {skill.years}
                         </span>
                       </div>

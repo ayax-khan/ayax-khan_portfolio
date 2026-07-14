@@ -34,7 +34,7 @@ const researchItems = [
 
 export function Research() {
   return (
-    <section className="py-24">
+    <section className="py-16">
       <div className="mx-auto max-w-5xl px-6">
         <ScrollReveal>
           <SectionHeading
@@ -45,22 +45,22 @@ export function Research() {
           />
         </ScrollReveal>
 
-        <StaggerContainer className="mt-12 grid gap-4">
+        <StaggerContainer className="mt-8 grid gap-3">
           {researchItems.map((item) => {
             const Icon = item.icon
             return (
               <StaggerItem key={item.title}>
-                <div className="group flex items-center gap-5 rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--surface)] p-5 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md sm:p-6">
-                  <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-[var(--accent-soft)] text-[var(--accent)]">
-                    <Icon size={22} />
+                <div className="group flex items-center gap-4 rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--surface)] p-4 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md sm:p-5">
+                  <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-[var(--accent-soft)] text-[var(--accent)]">
+                    <Icon size={20} />
                   </div>
                   <div className="flex-1">
-                    <h3 className="text-base font-semibold text-[var(--fg)]">{item.title}</h3>
-                    <p className="mt-1 text-sm text-[var(--muted)]">{item.description}</p>
+                    <h3 className="text-sm font-semibold text-[var(--fg)]">{item.title}</h3>
+                    <p className="mt-0.5 text-sm text-[var(--muted)]">{item.description}</p>
                   </div>
-                  <div className="hidden items-center gap-3 sm:flex">
+                  <div className="hidden items-center gap-2 sm:flex">
                     <span className="text-xs font-medium text-[var(--accent)]">{item.count}</span>
-                    <ExternalLink size={16} className="text-[var(--muted-2)] transition-colors group-hover:text-[var(--accent)]" />
+                    <ExternalLink size={14} className="text-[var(--muted-2)] transition-colors group-hover:text-[var(--accent)]" />
                   </div>
                 </div>
               </StaggerItem>

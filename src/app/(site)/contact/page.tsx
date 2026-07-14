@@ -12,59 +12,58 @@ export default async function ContactPage() {
   const links = publicSocialLinks(profile)
 
   return (
-    <div className="mx-auto max-w-5xl px-6 pt-32 pb-24">
-      <div className="grid gap-16 lg:grid-cols-2">
-        {/* Left */}
+    <div className="mx-auto max-w-5xl px-6 pt-28 pb-20">
+      <div className="grid gap-10 lg:grid-cols-2 lg:gap-14">
         <div>
-          <p className="mb-4 inline-flex items-center rounded-full border border-[var(--accent)]/20 bg-[var(--accent-soft)] px-3 py-1 text-xs font-medium text-[var(--accent)]">
+          <p className="mb-3 inline-flex items-center rounded-full border border-[var(--accent)]/20 bg-[var(--accent-soft)] px-2.5 py-0.5 text-[11px] font-medium text-[var(--accent)]">
             Contact
           </p>
-          <h1 className="text-4xl font-bold tracking-tight text-[var(--fg)] sm:text-5xl">
+          <h1 className="text-3xl font-bold tracking-tight text-[var(--fg)] sm:text-4xl">
             Get in Touch
           </h1>
-          <p className="mt-4 text-lg leading-relaxed text-[var(--muted)]">
+          <p className="mt-3 text-base leading-relaxed text-[var(--muted)]">
             Have a project in mind? Let&apos;s discuss how I can help bring your ideas to life.
           </p>
 
-          <div className="mt-10 space-y-6">
-            <div className="flex items-center gap-4">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--accent-soft)] text-[var(--accent)]">
-                <Mail size={18} />
+          <div className="mt-8 space-y-5">
+            <div className="flex items-center gap-3">
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[var(--accent-soft)] text-[var(--accent)]">
+                <Mail size={16} />
               </div>
               <div>
                 <p className="text-sm font-medium text-[var(--fg)]">Email</p>
-                <p className="text-sm text-[var(--muted)]">{profile.email || 'hello@ayaz.dev'}</p>
+                <p className="text-xs text-[var(--muted)]">{profile.email || 'hello@ayaz.dev'}</p>
               </div>
             </div>
-            <div className="flex items-center gap-4">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--accent-soft)] text-[var(--accent)]">
-                <MapPin size={18} />
+            <div className="flex items-center gap-3">
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[var(--accent-soft)] text-[var(--accent)]">
+                <MapPin size={16} />
               </div>
               <div>
                 <p className="text-sm font-medium text-[var(--fg)]">Location</p>
-                <p className="text-sm text-[var(--muted)]">{profile.location || 'Remote / Worldwide'}</p>
+                <p className="text-xs text-[var(--muted)]">{profile.location || 'Remote / Worldwide'}</p>
               </div>
             </div>
-            <div className="flex items-center gap-4">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--accent-soft)] text-[var(--accent)]">
-                <Clock size={18} />
+            <div className="flex items-center gap-3">
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[var(--accent-soft)] text-[var(--accent)]">
+                <Clock size={16} />
               </div>
               <div>
                 <p className="text-sm font-medium text-[var(--fg)]">Availability</p>
-                <p className="text-sm text-[var(--muted)]">Open to freelance & full-time</p>
+                <p className="text-xs text-[var(--muted)]">Open to freelance & full-time</p>
               </div>
             </div>
           </div>
 
           {links.length > 0 ? (
-            <div className="mt-8 flex flex-wrap gap-3">
+            <div className="mt-6 flex flex-wrap gap-2">
               {links.map((l) => (
                 <a
                   key={l.href}
                   href={l.href}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center gap-1 rounded-xl border border-[var(--border)] px-4 py-2 text-sm font-medium text-[var(--muted)] transition-all hover:border-[var(--fg)] hover:text-[var(--fg)]"
+                  className="inline-flex items-center gap-1 rounded-xl border border-[var(--border)] px-3.5 py-1.5 text-xs font-medium text-[var(--muted)] transition-all hover:border-[var(--fg)] hover:text-[var(--fg)]"
                 >
                   {l.label}
                 </a>
@@ -73,8 +72,7 @@ export default async function ContactPage() {
           ) : null}
         </div>
 
-        {/* Right - Form */}
-        <div className="rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--surface)] p-6 shadow-sm sm:p-8">
+        <div className="rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--surface)] p-5 shadow-sm sm:p-6">
           <ContactForm />
         </div>
       </div>

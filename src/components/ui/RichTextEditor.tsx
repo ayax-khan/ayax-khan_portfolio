@@ -26,11 +26,11 @@ const GROUPS: ToolbarGroup[] = [
   {
     label: 'Headings',
     buttons: [
-      { label: 'H1', command: 'formatBlock', value: 'h1' },
-      { label: 'H2', command: 'formatBlock', value: 'h2' },
-      { label: 'H3', command: 'formatBlock', value: 'h3' },
-      { label: 'H4', command: 'formatBlock', value: 'h4' },
-      { label: 'Paragraph', command: 'formatBlock', value: 'p' },
+      { label: 'H1', command: 'h1' },
+      { label: 'H2', command: 'h2' },
+      { label: 'H3', command: 'h3' },
+      { label: 'H4', command: 'h4' },
+      { label: 'P', command: 'paragraph' },
     ],
   },
   {
@@ -41,25 +41,24 @@ const GROUPS: ToolbarGroup[] = [
     ],
   },
   {
-    label: 'Align',
-    buttons: [
-      { label: 'Left', command: 'justifyLeft', icon: '≡' },
-      { label: 'Center', command: 'justifyCenter', icon: '≡' },
-      { label: 'Right', command: 'justifyRight', icon: '≡' },
-    ],
-  },
-  {
     buttons: [
       { label: 'Quote', command: 'formatBlock', value: 'blockquote', icon: '"' },
       { label: 'Code', command: 'formatBlock', value: 'pre', icon: '</>' },
-      { label: 'Link', command: 'createLink', icon: '🔗' },
+      { label: 'Link', command: 'link', icon: '🔗' },
       { label: 'HR', command: 'insertHorizontalRule', icon: '—' },
     ],
   },
 ]
 
-function exec(command: string, value?: string) {
+function execFormat(command: string, value?: string) {
   document.execCommand(command, false, value)
+}
+
+let headingEditorRef: HTMLDivElement | null = null
+
+function headingCommand(level: string) {
+  execFormat('formatBlock', level === 'paragraph' ? 'p' : level)
+  if (headingEditorRef) headingEditorRef.focus()
 }
 
 type Props = {
@@ -71,6 +70,9 @@ type Props = {
 export function RichTextEditor({ value, onChange, placeholder = 'Start writing...' }: Props) {
   const editorRef = useRef<HTMLDivElement>(null)
   const [isMounted, setIsMounted] = useState(false)
+  const [linkUrl, setLinkUrl] = useState('')
+  const [showLinkInput, setShowLinkInput] = useState(false)
+  const linkInputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     setIsMounted(true)
@@ -83,16 +85,44 @@ export function RichTextEditor({ value, onChange, placeholder = 'Start writing..
     }
   }, [onChange, value])
 
-  const handleToolbar = useCallback((cmd: string, val?: string) => {
-    if (cmd === 'createLink') {
-      const url = prompt('Enter URL:', 'https://')
-      if (url) exec(cmd, url)
-      return
+  const insertLink = useCallback(() => {
+    if (!linkUrl) return
+    const trimmed = linkUrl.trim()
+    if (!trimmed) return
+
+    const selection = window.getSelection()
+    if (!selection || !selection.rangeCount || selection.isCollapsed) {
+      execFormat('insertHTML', `<a href="${trimmed}">${trimmed}</a>`)
+    } else {
+      const url = trimmed.startsWith('http://') || trimmed.startsWith('https://') ? trimmed : `https://${trimmed}`
+      execFormat('createLink', url)
     }
-    exec(cmd, val)
     handleInput()
+    setShowLinkInput(false)
+    setLinkUrl('')
     if (editorRef.current) editorRef.current.focus()
-  }, [handleInput])
+  }, [linkUrl, handleInput])
+
+  const handleToolbar = useCallback(
+    (cmd: string, val?: string) => {
+      if (cmd === 'link') {
+        setShowLinkInput(true)
+        setLinkUrl('')
+        setTimeout(() => linkInputRef.current?.focus(), 50)
+        return
+      }
+      if (['h1', 'h2', 'h3', 'h4', 'paragraph'].includes(cmd)) {
+        headingEditorRef = editorRef.current
+        headingCommand(cmd === 'paragraph' ? 'p' : cmd)
+        handleInput()
+        return
+      }
+      execFormat(cmd, val)
+      handleInput()
+      if (editorRef.current) editorRef.current.focus()
+    },
+    [handleInput],
+  )
 
   useEffect(() => {
     if (isMounted && editorRef.current && editorRef.current.innerHTML !== value) {
@@ -103,7 +133,13 @@ export function RichTextEditor({ value, onChange, placeholder = 'Start writing..
   const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
     if (e.key === 'Tab') {
       e.preventDefault()
-      exec('insertHTML', '&emsp;')
+      execFormat('insertHTML', '&emsp;')
+    }
+    if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+      e.preventDefault()
+      setShowLinkInput(true)
+      setLinkUrl('')
+      setTimeout(() => linkInputRef.current?.focus(), 50)
     }
   }, [])
 
@@ -122,7 +158,7 @@ export function RichTextEditor({ value, onChange, placeholder = 'Start writing..
                   e.preventDefault()
                   handleToolbar(btn.command, btn.value)
                 }}
-                className="flex h-8 w-8 items-center justify-center rounded-md text-xs font-semibold text-[color:var(--muted)] hover:bg-[color:var(--surface-2)] hover:text-[color:var(--fg)]"
+                className="flex h-8 w-8 items-center justify-center rounded-md text-xs font-semibold text-[color:var(--muted)] hover:bg-[color:var(--surface-2)] hover:text-[color:var(--fg)] transition-colors"
               >
                 {btn.icon ?? btn.label}
               </button>
@@ -130,6 +166,49 @@ export function RichTextEditor({ value, onChange, placeholder = 'Start writing..
           </div>
         ))}
       </div>
+
+      {showLinkInput && (
+        <div className="flex items-center gap-2 border-b border-[color:var(--border)] bg-[color:var(--surface-2)] px-3 py-2">
+          <input
+            ref={linkInputRef}
+            type="url"
+            value={linkUrl}
+            onChange={(e) => setLinkUrl(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                e.preventDefault()
+                insertLink()
+              }
+              if (e.key === 'Escape') {
+                setShowLinkInput(false)
+                setLinkUrl('')
+                if (editorRef.current) editorRef.current.focus()
+              }
+            }}
+            placeholder="https://example.com"
+            className="flex-1 rounded-lg border border-[color:var(--border)] bg-[color:var(--bg)] px-3 py-1.5 text-sm text-[color:var(--fg)] outline-none focus:ring-2 focus:ring-[color:var(--selection)]"
+            autoFocus
+          />
+          <button
+            type="button"
+            onClick={insertLink}
+            className="rounded-lg bg-[color:var(--fg)] px-3 py-1.5 text-xs font-semibold text-[color:var(--bg)] hover:opacity-90 transition-opacity"
+          >
+            Add
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setShowLinkInput(false)
+              setLinkUrl('')
+              if (editorRef.current) editorRef.current.focus()
+            }}
+            className="rounded-lg border border-[color:var(--border)] px-3 py-1.5 text-xs font-semibold text-[color:var(--muted)] hover:bg-[color:var(--surface-2)] transition-colors"
+          >
+            Cancel
+          </button>
+        </div>
+      )}
 
       <div
         ref={editorRef}

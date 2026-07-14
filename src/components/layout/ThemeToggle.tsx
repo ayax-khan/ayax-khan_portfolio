@@ -128,7 +128,7 @@ export function ThemeToggle({ className, compact }: { className?: string; compac
 
       {/* Fixed end icons */}
       <span className="pointer-events-none absolute inset-0 z-10 flex items-center justify-between px-3" aria-hidden="true">
-        <SunIcon className={`h-4 w-4 transition-opacity ${isNavy ? 'opacity-45' : 'opacity-100'} text-amber-500`} />
+        <SunIcon className={`h-4 w-4 transition-opacity ${isNavy ? 'opacity-40' : 'opacity-100'} text-amber-600`} />
         <MoonIcon
           className={`h-4 w-4 transition-opacity ${isNavy ? 'opacity-100 text-indigo-200' : 'opacity-70 text-slate-600'}`}
         />

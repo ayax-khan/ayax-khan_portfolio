@@ -4,6 +4,7 @@ import { Badge } from '@/components/ui/Badge'
 import { SectionHeading } from '@/components/ui/SectionHeading'
 import { getPublicProfile, publicSocialLinks } from '@/lib/publicProfile'
 import { getExperienceEntries, getEducationEntries } from '@/app/admin/profile/actions'
+import { FALLBACK_SKILLS } from '@/lib/defaults'
 
 export const metadata = {
   title: 'About',
@@ -18,7 +19,7 @@ export default async function AboutPage() {
 
   const displaySkills = profile.skills.length > 0
     ? profile.skills
-    : ['TypeScript', 'Next.js (App Router)', 'React', 'Node.js', 'PostgreSQL', 'Prisma', 'Security', 'Performance']
+    : FALLBACK_SKILLS
 
   return (
     <div className="space-y-10">

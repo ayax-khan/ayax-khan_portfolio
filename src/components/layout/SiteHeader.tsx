@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import { site } from '@/lib/site'
 import { ThemeToggle } from '@/components/layout/ThemeToggle'
 import Link from 'next/link'
@@ -13,8 +14,7 @@ export async function SiteHeader() {
     <header className="sticky top-0 z-50 border-b border-[color:var(--border)] bg-[color:var(--bg)]/70 backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
         <Link href="/" className="flex min-w-0 items-center gap-2 text-sm font-semibold text-[color:var(--fg)]" prefetch={true}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/Mayaz.png" alt="Logo" className="h-8 w-8 flex-shrink-0 rounded-full object-cover" />
+          <Image src="/Mayaz.png" alt="Logo" width={32} height={32} className="h-8 w-8 flex-shrink-0 rounded-full object-cover" />
           <span className="truncate">
             <span className="sm:hidden">{shortName || profile.name}</span>
             <span className="hidden sm:inline">{profile.name}</span>

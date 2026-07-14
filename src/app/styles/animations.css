@@ -1,0 +1,146 @@
+/* View Transitions */
+@media (prefers-reduced-motion: no-preference) {
+  ::view-transition-old(root) {
+    animation: vt-fade-out 220ms ease forwards;
+  }
+
+  ::view-transition-new(root) {
+    animation: vt-fade-in 320ms ease 40ms forwards;
+  }
+}
+
+@keyframes vt-fade-out {
+  to {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+@keyframes vt-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+    filter: saturate(1.05);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: none;
+  }
+}
+
+/* Hero avatar spin */
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes heroAvatarSpin {
+    to {
+      transform: translateZ(0) rotate(360deg);
+    }
+  }
+
+  @keyframes heroAvatarSpinReverse {
+    to {
+      transform: translateZ(0) rotate(-360deg);
+    }
+  }
+
+  .hero-avatar__ring--a {
+    animation: heroAvatarSpin 7.5s linear infinite;
+  }
+
+  .hero-avatar__ring--b {
+    animation: heroAvatarSpinReverse 11.5s linear infinite;
+  }
+
+  .portfolio-hero__orb-ring {
+    animation: heroAvatarSpin 8s linear infinite;
+  }
+
+  .portfolio-hero__orb-ring--inner {
+    animation: heroAvatarSpinReverse 12s linear infinite;
+  }
+}
+
+/* Rotating project cards */
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes rotCycle {
+    0% {
+      opacity: 0;
+      transform: translate3d(0, 14px, 0) rotateX(10deg) scale(0.96);
+    }
+    8% {
+      opacity: 1;
+      transform: translate3d(0, 0, 0) rotateX(0deg) scale(1);
+    }
+    28% {
+      opacity: 1;
+      transform: translate3d(0, 0, 0) rotateX(0deg) scale(1);
+    }
+    38% {
+      opacity: 0;
+      transform: translate3d(0, -10px, 0) rotateX(-9deg) scale(1.02);
+    }
+    100% {
+      opacity: 0;
+      transform: translate3d(0, -10px, 0) rotateX(-9deg) scale(1.02);
+    }
+  }
+}
+
+/* Theme toggle animations */
+@keyframes themeToggleCrest {
+  0% { background-position: 0 0; }
+  100% { background-position: 280px 0; }
+}
+
+@keyframes themeToggleCrestBob {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(1px); }
+  100% { transform: translateY(0); }
+}
+
+@keyframes themeToggleDriftBack {
+  0% { background-position: 0 0; transform: translateY(0); }
+  50% { transform: translateY(1px); }
+  100% { background-position: 240px 0; transform: translateY(0); }
+}
+
+@keyframes themeToggleDriftMid {
+  0% { background-position: 0 0; transform: translateY(0); }
+  50% { transform: translateY(-1px); }
+  100% { background-position: 320px 0; transform: translateY(0); }
+}
+
+@keyframes themeToggleDriftFront {
+  0% { background-position: 0 0; transform: translateY(0); }
+  50% { transform: translateY(1px); }
+  100% { background-position: 420px 0; transform: translateY(0); }
+}
+
+@keyframes themeToggleBubbles {
+  0% { opacity: 0; transform: translateY(6px); filter: blur(0.2px); }
+  15% { opacity: 0.9; }
+  100% { opacity: 0; transform: translateY(-8px); filter: blur(0.6px); }
+}
+
+@keyframes themeToggleRipple {
+  0% { opacity: 0; transform: translateY(4px) scale(0.7); }
+  18% { opacity: 0.85; }
+  100% { opacity: 0; transform: translateY(0) scale(1.45); }
+}
+
+@keyframes themeToggleShipTilt {
+  0% { transform: translateX(0) rotate(0deg); }
+  35% { transform: translateX(2px) rotate(-10deg); }
+  100% { transform: translateX(0) rotate(0deg); }
+}
+
+@keyframes themeToggleBob {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-2px); }
+  100% { transform: translateY(0); }
+}
+
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}

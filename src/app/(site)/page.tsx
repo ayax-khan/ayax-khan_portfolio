@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import Link from 'next/link'
 import { Card } from '@/components/ui/Card'
 import { Badge } from '@/components/ui/Badge'
@@ -11,6 +12,7 @@ import { ScrollProgress } from '@/components/motion/ScrollProgress'
 import { getProjectsFromGithub } from '@/lib/github/repos'
 import { listPublishedPosts } from '@/lib/blog'
 import { getPublicProfile } from '@/lib/publicProfile'
+import { FALLBACK_SKILLS } from '@/lib/defaults'
 
 export const metadata = {
   title: 'Home',
@@ -39,8 +41,7 @@ export default async function HomePage() {
                     <span className="hero-avatar sm:scale-100" aria-hidden={true}>
                       <span className="hero-avatar__ring hero-avatar__ring--a" aria-hidden="true" />
                       <span className="hero-avatar__ring hero-avatar__ring--b" aria-hidden="true" />
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src="/Mayaz.png" alt="Logo" className="relative z-2 h-12 w-12 rounded-full object-cover backdrop-blur-sm" />
+                      <Image src="/Mayaz.png" alt="Logo" width={48} height={48} className="relative z-2 h-12 w-12 rounded-full object-cover backdrop-blur-sm" />
                     </span>
                   </ScrollReveal>
                   
@@ -80,8 +81,14 @@ export default async function HomePage() {
                   <div className="portfolio-hero__orb-ring" />
                   <div className="portfolio-hero__orb-ring portfolio-hero__orb-ring--inner" />
                   <div className="portfolio-hero__orb-image-wrap">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={profile.imageUrl || '/ayaz.png'} alt="" className="portfolio-hero__img" />
+                    <Image
+                      src={profile.imageUrl || '/ayaz.png'}
+                      alt=""
+                      className="portfolio-hero__img"
+                      fill
+                      unoptimized
+                      sizes="(max-width: 768px) 300px, 350px"
+                    />
                   </div>
                 </div>
               </Parallax>
@@ -192,7 +199,7 @@ export default async function HomePage() {
               A quick snapshot of the tools I ship with day-to-day.
             </p>
             <div className="mt-4 flex flex-wrap gap-2">
-              {(profile.skills.length > 0 ? profile.skills : ['TypeScript', 'Next.js', 'React', 'PostgreSQL', 'Prisma', 'Security', 'Performance']).map((s) => (
+              {(profile.skills.length > 0 ? profile.skills : FALLBACK_SKILLS).map((s) => (
                 <Badge key={s}>{s}</Badge>
               ))}
             </div>

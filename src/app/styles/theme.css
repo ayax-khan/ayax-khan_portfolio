@@ -1,0 +1,35 @@
+:root,
+:root[data-theme='light'] {
+  --bg: #faf9f7;
+  --fg: #1c1917;
+  --muted: rgba(28, 25, 23, 0.58);
+  --border: rgba(28, 25, 23, 0.10);
+  --surface: rgba(28, 25, 23, 0.03);
+  --surface-2: rgba(28, 25, 23, 0.06);
+  --selection: rgba(180, 83, 9, 0.14);
+  --accent: #b45309;
+  --accent-soft: rgba(180, 83, 9, 0.10);
+}
+
+:root[data-theme='navy'] {
+  --bg: #071125;
+  --fg: #e7eefc;
+  --muted: rgba(231, 238, 252, 0.72);
+  --border: rgba(231, 238, 252, 0.14);
+  --surface: rgba(231, 238, 252, 0.07);
+  --surface-2: rgba(231, 238, 252, 0.12);
+  --selection: rgba(96, 165, 250, 0.25);
+  --accent: #60a5fa;
+  --accent-soft: rgba(96, 165, 250, 0.12);
+}
+
+@theme inline {
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+}

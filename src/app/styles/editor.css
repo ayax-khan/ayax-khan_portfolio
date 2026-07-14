@@ -1,0 +1,101 @@
+/* Blog content display */
+.blog-content {
+  color: var(--fg);
+  line-height: 1.8;
+}
+.blog-content h1 { font-size: 2rem; font-weight: 700; margin: 2rem 0 0.75rem; letter-spacing: -0.02em; }
+.blog-content h2 { font-size: 1.5rem; font-weight: 600; margin: 1.75rem 0 0.5rem; letter-spacing: -0.01em; }
+.blog-content h3 { font-size: 1.25rem; font-weight: 600; margin: 1.5rem 0 0.5rem; }
+.blog-content h4 { font-size: 1.1rem; font-weight: 600; margin: 1.25rem 0 0.5rem; }
+.blog-content p { margin: 0.75rem 0; color: var(--muted); }
+.blog-content a { color: var(--fg); text-decoration: underline; text-underline-offset: 2px; }
+.blog-content a:hover { opacity: 0.8; }
+.blog-content blockquote {
+  border-left: 4px solid var(--border);
+  padding-left: 1.25rem;
+  margin: 1.25rem 0;
+  color: var(--muted);
+  font-style: italic;
+}
+.blog-content pre {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.25rem;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  overflow-x: auto;
+  margin: 1.25rem 0;
+}
+.blog-content code {
+  background: var(--surface-2);
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+  font-size: 0.875em;
+  font-family: var(--font-geist-mono), monospace;
+}
+.blog-content pre code {
+  background: none;
+  padding: 0;
+  border-radius: 0;
+}
+.blog-content ul,
+.blog-content ol {
+  padding-left: 1.75rem;
+  margin: 0.75rem 0;
+}
+.blog-content li { margin: 0.35rem 0; color: var(--muted); }
+.blog-content img {
+  max-width: 100%;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  margin: 1.5rem auto;
+  display: block;
+}
+.blog-content hr { margin: 2rem 0; border-color: var(--border); }
+.blog-content table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+.blog-content th, .blog-content td {
+  border: 1px solid var(--border);
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+}
+.blog-content th { background: var(--surface); font-weight: 600; }
+
+/* Rich Text Editor */
+.rich-editor [contenteditable]:empty::before {
+  content: attr(data-placeholder);
+  color: var(--muted);
+  pointer-events: none;
+}
+
+.rich-editor [contenteditable] h1 { font-size: 2rem; font-weight: 700; margin: 1.5rem 0 0.75rem; }
+.rich-editor [contenteditable] h2 { font-size: 1.5rem; font-weight: 600; margin: 1.25rem 0 0.5rem; }
+.rich-editor [contenteditable] h3 { font-size: 1.25rem; font-weight: 600; margin: 1rem 0 0.5rem; }
+.rich-editor [contenteditable] h4 { font-size: 1.1rem; font-weight: 600; margin: 0.75rem 0 0.5rem; }
+.rich-editor [contenteditable] p { margin: 0.5rem 0; }
+.rich-editor [contenteditable] blockquote {
+  border-left: 3px solid var(--border);
+  padding-left: 1rem;
+  margin: 0.75rem 0;
+  color: var(--muted);
+  font-style: italic;
+}
+.rich-editor [contenteditable] pre {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1rem;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.875rem;
+  overflow-x: auto;
+  margin: 0.75rem 0;
+}
+.rich-editor [contenteditable] ul,
+.rich-editor [contenteditable] ol {
+  padding-left: 1.5rem;
+  margin: 0.5rem 0;
+}
+.rich-editor [contenteditable] li { margin: 0.25rem 0; }
+.rich-editor [contenteditable] a { color: var(--fg); text-decoration: underline; }
+.rich-editor [contenteditable] hr { margin: 1.5rem 0; border-color: var(--border); }

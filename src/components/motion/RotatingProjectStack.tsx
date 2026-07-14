@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import { useMemo } from 'react'
 
 export type RotatingProject = {
@@ -49,8 +50,7 @@ export function RotatingProjectStack({ title, projects, orientation = 'landscape
           >
             <div className="rot-card__media">
               {p.thumbnailUrl ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img src={p.thumbnailUrl} alt="" className="rot-card__img" loading="lazy" />
+                <Image src={p.thumbnailUrl} alt="" className="rot-card__img" fill unoptimized />
               ) : (
                 <div className="rot-card__placeholder" aria-hidden="true" />
               )}

@@ -327,8 +327,8 @@ const ExperienceEntrySchema: z.ZodType<ExperienceEntry> = z.object({
   location: z.string().max(160).optional().default(''),
   start: z.string().max(40).optional().default(''),
   end: z.string().max(40).optional().default(''),
-  highlights: z.array(z.string().min(1).max(300)).max(50).optional().default([]),
-  notes: z.string().max(1500).optional().default(''),
+  highlights: z.array(z.string().min(1).max(1000)).max(50).optional().default([]),
+  notes: z.string().max(5000).optional().default(''),
 })
 
 const ExperienceListSchema = z.array(ExperienceEntrySchema).max(200)
@@ -394,41 +394,51 @@ export async function getExperienceEntries(): Promise<ExperienceEntry[]> {
 }
 
 export async function addExperienceEntry(formData: FormData) {
-  const current = await getExperienceEntries()
+  try {
+    const current = await getExperienceEntries()
 
-  const nextEntry: ExperienceEntry = ExperienceEntrySchema.parse({
-    id: crypto.randomUUID(),
-    company: String(formData.get('company') ?? '').trim(),
-    role: String(formData.get('role') ?? '').trim(),
-    location: String(formData.get('location') ?? '').trim(),
-    start: String(formData.get('start') ?? '').trim(),
-    end: String(formData.get('end') ?? '').trim(),
-    highlights: parseHighlights(formData.get('highlights')),
-    notes: String(formData.get('notes') ?? '').trim(),
-  })
+    const nextEntry: ExperienceEntry = ExperienceEntrySchema.parse({
+      id: crypto.randomUUID(),
+      company: String(formData.get('company') ?? '').trim(),
+      role: String(formData.get('role') ?? '').trim(),
+      location: String(formData.get('location') ?? '').trim(),
+      start: String(formData.get('start') ?? '').trim(),
+      end: String(formData.get('end') ?? '').trim(),
+      highlights: parseHighlights(formData.get('highlights')),
+      notes: String(formData.get('notes') ?? '').trim(),
+    })
 
-  const next = ExperienceListSchema.parse([nextEntry, ...current])
-  await setSetting('profile.experience', next)
+    const next = ExperienceListSchema.parse([nextEntry, ...current])
+    await setSetting('profile.experience', next)
+  } catch (err) {
+    console.error('Failed to add experience:', err)
+    throw err
+  }
 }
 
 export async function updateExperienceEntry(id: string, formData: FormData) {
-  const current = await getExperienceEntries()
-  const existing = current.find((e) => e.id === id)
-  if (!existing) return
+  try {
+    const current = await getExperienceEntries()
+    const existing = current.find((e) => e.id === id)
+    if (!existing) return
 
-  const updated: ExperienceEntry = ExperienceEntrySchema.parse({
-    ...existing,
-    company: String(formData.get('company') ?? '').trim(),
-    role: String(formData.get('role') ?? '').trim(),
-    location: String(formData.get('location') ?? '').trim(),
-    start: String(formData.get('start') ?? '').trim(),
-    end: String(formData.get('end') ?? '').trim(),
-    highlights: parseHighlights(formData.get('highlights')),
-    notes: String(formData.get('notes') ?? '').trim(),
-  })
+    const updated: ExperienceEntry = ExperienceEntrySchema.parse({
+      ...existing,
+      company: String(formData.get('company') ?? '').trim(),
+      role: String(formData.get('role') ?? '').trim(),
+      location: String(formData.get('location') ?? '').trim(),
+      start: String(formData.get('start') ?? '').trim(),
+      end: String(formData.get('end') ?? '').trim(),
+      highlights: parseHighlights(formData.get('highlights')),
+      notes: String(formData.get('notes') ?? '').trim(),
+    })
 
-  const next = ExperienceListSchema.parse(current.map((e) => (e.id === id ? updated : e)))
-  await setSetting('profile.experience', next)
+    const next = ExperienceListSchema.parse(current.map((e) => (e.id === id ? updated : e)))
+    await setSetting('profile.experience', next)
+  } catch (err) {
+    console.error('Failed to update experience:', err)
+    throw err
+  }
 }
 
 export async function deleteExperienceEntry(id: string) {

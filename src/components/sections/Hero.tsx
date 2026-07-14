@@ -1,7 +1,6 @@
 'use client'
 
 import Image from 'next/image'
-import { ArrowRight, Download } from 'lucide-react'
 import { GithubIcon, LinkedinIcon } from '@/components/ui/brand-icons'
 import { ScrollReveal } from '@/components/motion/ScrollReveal'
 import { FadeIn } from '@/components/motion/FadeIn'
@@ -23,12 +22,12 @@ const stats = [
 ]
 
 const techIcons = [
-  { label: 'Python', icon: '🐍', x: '15%', y: '20%', delay: '0s' },
-  { label: 'TypeScript', icon: 'TS', x: '80%', y: '15%', delay: '0.5s' },
-  { label: 'React', icon: '⚛️', x: '85%', y: '60%', delay: '1s' },
-  { label: 'Docker', icon: '🐳', x: '10%', y: '65%', delay: '1.5s' },
-  { label: 'AI', icon: '🤖', x: '20%', y: '75%', delay: '2s' },
-  { label: 'Node', icon: '🟢', x: '75%', y: '75%', delay: '2.5s' },
+  { label: 'Python', icon: '🐍', x: '5%', y: '30%', delay: '0s' },
+  { label: 'TypeScript', icon: 'TS', x: '88%', y: '20%', delay: '0.5s' },
+  { label: 'React', icon: '⚛️', x: '90%', y: '70%', delay: '1s' },
+  { label: 'Docker', icon: '🐳', x: '3%', y: '65%', delay: '1.5s' },
+  { label: 'AI', icon: '🤖', x: '92%', y: '45%', delay: '2s' },
+  { label: 'Node', icon: '🟢', x: '5%', y: '50%', delay: '2.5s' },
 ]
 
 export function Hero({ name, title, bio, imageUrl, github, linkedin }: Props) {
@@ -40,7 +39,7 @@ export function Hero({ name, title, bio, imageUrl, github, linkedin }: Props) {
         {techIcons.map((tech) => (
           <FadeIn key={tech.label} delay={Number.parseFloat(tech.delay)}>
             <div
-              className="animate-float absolute flex h-8 w-8 items-center justify-center rounded-xl border border-[var(--border)] bg-[var(--surface)] text-xs shadow-sm"
+              className="animate-float absolute flex h-7 w-7 items-center justify-center rounded-lg border border-[var(--border)] bg-[var(--surface)] text-[10px] shadow-sm"
               style={{ left: tech.x, top: tech.y }}
             >
               {tech.icon}
@@ -61,11 +60,11 @@ export function Hero({ name, title, bio, imageUrl, github, linkedin }: Props) {
 
             <ScrollReveal delay={0.1} y={20}>
               <h1 className="text-3xl font-bold leading-tight tracking-tight sm:text-4xl md:text-5xl">
-                Hi, I&apos;m <span className="text-[var(--accent)]">{name}</span>.
+                <span className="text-[var(--accent)]">{name}</span>
                 <br />
-                <span className="text-[var(--fg)]">AI Engineer</span>
+                <span className="text-[var(--fg)]">Vision AI Engineer</span>
                 <br />
-                <span className="text-[var(--muted)]">building Intelligent products.</span>
+                <span className="text-base sm:text-lg text-[var(--muted)]">Co-Founder of Buy2Enjoy.pk & Devssdo.com</span>
               </h1>
             </ScrollReveal>
 
@@ -76,25 +75,6 @@ export function Hero({ name, title, bio, imageUrl, github, linkedin }: Props) {
             </ScrollReveal>
 
             <ScrollReveal delay={0.3} y={20}>
-              <div className="mt-6 flex flex-wrap items-center gap-3">
-                <a
-                  href="/projects"
-                  className="inline-flex items-center gap-2 rounded-xl bg-[var(--accent)] px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-[var(--accent-hover)] hover:shadow-md"
-                >
-                  View Projects
-                  <ArrowRight size={16} />
-                </a>
-                <a
-                  href="/resume"
-                  className="inline-flex items-center gap-2 rounded-xl border border-[var(--border)] bg-[var(--surface)] px-5 py-2.5 text-sm font-semibold text-[var(--fg)] transition-all hover:bg-[var(--surface-2)] hover:shadow-sm"
-                >
-                  <Download size={16} />
-                  Download Resume
-                </a>
-              </div>
-            </ScrollReveal>
-
-            <ScrollReveal delay={0.4} y={20}>
               <div className="mt-4 flex items-center gap-4">
                 {github ? (
                   <a
@@ -121,7 +101,7 @@ export function Hero({ name, title, bio, imageUrl, github, linkedin }: Props) {
               </div>
             </ScrollReveal>
 
-            <ScrollReveal delay={0.5} y={20}>
+            <ScrollReveal delay={0.4} y={20}>
               <div className="mt-8 grid grid-cols-4 gap-4 border-t border-[var(--border)] pt-6">
                 {stats.map((stat) => (
                   <div key={stat.label}>

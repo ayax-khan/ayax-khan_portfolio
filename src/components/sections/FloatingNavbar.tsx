@@ -8,11 +8,11 @@ import { Menu, X } from 'lucide-react'
 
 const navLinks = [
   { href: '/', label: 'Home' },
-  { href: '/projects', label: 'Projects' },
-  { href: '/experience', label: 'Experience' },
-  { href: '/skills', label: 'Skills' },
+  { href: '/#projects', label: 'Projects' },
+  { href: '/#experience', label: 'Experience' },
+  { href: '/#skills', label: 'Skills' },
+  { href: '/about', label: 'About' },
   { href: '/blog', label: 'Blog' },
-  { href: '/research', label: 'Research' },
   { href: '/contact', label: 'Contact' },
 ]
 
@@ -53,12 +53,6 @@ export function FloatingNavbar({ name }: { name: string }) {
         </nav>
 
         <div className="flex items-center gap-2">
-          <Link
-            href="/resume"
-            className="hidden rounded-xl bg-[var(--accent)] px-3.5 py-1.5 text-xs font-semibold text-white transition-all hover:bg-[var(--accent-hover)] sm:inline-flex"
-          >
-            Resume
-          </Link>
           <ThemeToggle compact />
           <button
             className="flex items-center justify-center rounded-lg p-2 text-[var(--muted)] hover:bg-[var(--surface-2)] md:hidden"
@@ -70,7 +64,6 @@ export function FloatingNavbar({ name }: { name: string }) {
         </div>
       </div>
 
-      {/* Mobile Nav */}
       {mobileOpen && (
         <div className="border-t border-[var(--border)] px-5 py-4 md:hidden">
           <nav className="flex flex-col gap-1">
@@ -84,13 +77,6 @@ export function FloatingNavbar({ name }: { name: string }) {
                 {link.label}
               </Link>
             ))}
-            <Link
-              href="/resume"
-              className="mt-2 rounded-xl bg-[var(--accent)] px-4 py-2.5 text-center text-sm font-semibold text-white"
-              onClick={() => setMobileOpen(false)}
-            >
-              Resume
-            </Link>
           </nav>
         </div>
       )}

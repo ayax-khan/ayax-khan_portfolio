@@ -13,26 +13,29 @@ export async function getGithubCache(args: {
   body: Prisma.InputJsonValue
   expiresAt: Date
 } | null> {
-  const entry = await prisma.githubApiCache.findUnique({
-    where: {
-      owner_repo_kind_argsHash: {
-        owner: args.owner,
-        repo: args.repo,
-        kind: args.kind,
-        argsHash: args.argsHash,
+  try {
+    const entry = await prisma.githubApiCache.findUnique({
+      where: {
+        owner_repo_kind_argsHash: {
+          owner: args.owner,
+          repo: args.repo,
+          kind: args.kind,
+          argsHash: args.argsHash,
+        },
       },
-    },
-  })
+    })
 
-  if (!entry) return null
+    if (!entry) return null
 
-  // Prisma returns JsonValue (nullable); our cache entries should always be non-null JSON.
-  if (entry.body === null) return null
+    if (entry.body === null) return null
 
-  return {
-    etag: entry.etag,
-    body: entry.body as unknown as Prisma.InputJsonValue,
-    expiresAt: entry.expiresAt,
+    return {
+      etag: entry.etag,
+      body: entry.body as unknown as Prisma.InputJsonValue,
+      expiresAt: entry.expiresAt,
+    }
+  } catch {
+    return null
   }
 }
 
@@ -45,31 +48,35 @@ export async function setGithubCache(args: {
   body: Prisma.InputJsonValue
   expiresAt: Date
 }): Promise<void> {
-  await prisma.githubApiCache.upsert({
-    where: {
-      owner_repo_kind_argsHash: {
+  try {
+    await prisma.githubApiCache.upsert({
+      where: {
+        owner_repo_kind_argsHash: {
+          owner: args.owner,
+          repo: args.repo,
+          kind: args.kind,
+          argsHash: args.argsHash,
+        },
+      },
+      create: {
         owner: args.owner,
         repo: args.repo,
         kind: args.kind,
         argsHash: args.argsHash,
+        etag: args.etag,
+        body: args.body,
+        expiresAt: args.expiresAt,
       },
-    },
-    create: {
-      owner: args.owner,
-      repo: args.repo,
-      kind: args.kind,
-      argsHash: args.argsHash,
-      etag: args.etag,
-      body: args.body,
-      expiresAt: args.expiresAt,
-    },
-    update: {
-      etag: args.etag,
-      body: args.body,
-      fetchedAt: new Date(),
-      expiresAt: args.expiresAt,
-    },
-  })
+      update: {
+        etag: args.etag,
+        body: args.body,
+        fetchedAt: new Date(),
+        expiresAt: args.expiresAt,
+      },
+    })
+  } catch {
+    // silently fail — cache writes are non-critical
+  }
 }
 
 export function isFresh(expiresAt: Date) {

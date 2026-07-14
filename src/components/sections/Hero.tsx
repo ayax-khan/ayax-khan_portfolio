@@ -64,7 +64,7 @@ export function Hero({ name, title, bio, imageUrl, github, linkedin }: Props) {
                 <br />
                 <span className="text-[var(--fg)]">Vision AI Engineer</span>
                 <br />
-                <span className="text-base sm:text-lg tracking-wide text-[var(--muted)]">Co-Founder of Buy2Enjoy.pk &amp; Devssdo.com</span>
+                <span className="text-base sm:text-lg tracking-wide text-[var(--muted)]">Co-Founder of <a href="https://buy2enjoy.pk" target="_blank" rel="noreferrer" className="underline decoration-dotted underline-offset-2 hover:text-[var(--accent)]">Buy2Enjoy.pk</a> &amp; <a href="https://devssdo.com" target="_blank" rel="noreferrer" className="underline decoration-dotted underline-offset-2 hover:text-[var(--accent)]">Devssdo.com</a></span>
               </h1>
             </ScrollReveal>
 

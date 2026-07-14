@@ -20,7 +20,7 @@ export default async function ProjectsPage({
   const sp = await searchParams
   const selectedTag = String(sp.tag ?? '').trim()
 
-  const allProjects = await getProjectsFromGithub()
+  const allProjects = await getProjectsFromGithub().catch(() => [])
   const projects = allProjects.filter((p) => p.featured)
 
   const allTags = Array.from(new Set(projects.flatMap((p) => p.tags))).sort()

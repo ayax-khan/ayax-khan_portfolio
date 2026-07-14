@@ -5,7 +5,6 @@ import {
   ExperienceTimeline,
   Research,
   BlogSection,
-  Testimonials,
   ContactSection,
   Footer,
 } from '@/components/sections'
@@ -51,7 +50,6 @@ export default async function HomePage() {
       <Skills />
       <Research />
       <BlogSection posts={posts} />
-      <Testimonials />
       <ContactSection />
       <Footer name={profile.name} socials={socialMap} />
     </>

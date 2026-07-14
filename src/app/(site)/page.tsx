@@ -13,6 +13,8 @@ import { listPublishedPosts } from '@/lib/blog'
 import { getPublicProfile, publicSocialLinks } from '@/lib/publicProfile'
 import { getExperienceEntries } from '@/app/admin/profile/actions'
 
+export const revalidate = 0
+
 export const metadata = {
   title: 'Home',
   description: 'AI Engineer & Full Stack Developer building intelligent products.',

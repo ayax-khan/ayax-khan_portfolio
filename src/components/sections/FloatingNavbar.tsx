@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { ThemeToggle } from '@/components/layout/ThemeToggle'
@@ -26,6 +26,19 @@ export function FloatingNavbar({ name }: { name: string }) {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
+  const handleNavClick = useCallback((href: string) => {
+    setMobileOpen(false)
+    const hashIndex = href.indexOf('#')
+    if (hashIndex === -1) return
+    const hash = href.slice(hashIndex)
+    if (hash) {
+      const el = document.querySelector(hash)
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' })
+      }
+    }
+  }, [])
+
   return (
     <header
       className={`fixed left-1/2 top-3 z-50 w-[calc(100%-32px)] max-w-5xl -translate-x-1/2 rounded-2xl border border-[var(--border)] transition-all duration-300 ${
@@ -45,6 +58,7 @@ export function FloatingNavbar({ name }: { name: string }) {
             <Link
               key={link.href}
               href={link.href}
+              onClick={() => handleNavClick(link.href)}
               className="rounded-lg px-2.5 py-1.5 text-xs text-[var(--muted)] transition-colors hover:bg-[var(--surface-2)] hover:text-[var(--fg)]"
             >
               {link.label}
@@ -72,7 +86,7 @@ export function FloatingNavbar({ name }: { name: string }) {
                 key={link.href}
                 href={link.href}
                 className="rounded-lg px-3 py-2.5 text-sm text-[var(--muted)] transition-colors hover:bg-[var(--surface-2)] hover:text-[var(--fg)]"
-                onClick={() => setMobileOpen(false)}
+                onClick={() => handleNavClick(link.href)}
               >
                 {link.label}
               </Link>

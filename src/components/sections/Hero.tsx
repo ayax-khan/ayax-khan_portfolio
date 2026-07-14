@@ -22,12 +22,12 @@ const stats = [
 ]
 
 const techIcons = [
-  { label: 'Python', icon: '🐍', x: '5%', y: '30%', delay: '0s' },
-  { label: 'TypeScript', icon: 'TS', x: '88%', y: '20%', delay: '0.5s' },
-  { label: 'React', icon: '⚛️', x: '90%', y: '70%', delay: '1s' },
-  { label: 'Docker', icon: '🐳', x: '3%', y: '65%', delay: '1.5s' },
-  { label: 'AI', icon: '🤖', x: '92%', y: '45%', delay: '2s' },
-  { label: 'Node', icon: '🟢', x: '5%', y: '50%', delay: '2.5s' },
+  { label: 'Python', icon: '🐍', x: '2%', y: '15%', delay: '0s' },
+  { label: 'TypeScript', icon: 'TS', x: '96%', y: '12%', delay: '0.5s' },
+  { label: 'React', icon: '⚛️', x: '95%', y: '78%', delay: '1s' },
+  { label: 'Docker', icon: '🐳', x: '1%', y: '78%', delay: '1.5s' },
+  { label: 'AI', icon: '🤖', x: '94%', y: '45%', delay: '2s' },
+  { label: 'Node', icon: '🟢', x: '2%', y: '45%', delay: '2.5s' },
 ]
 
 export function Hero({ name, title, bio, imageUrl, github, linkedin }: Props) {
@@ -35,11 +35,11 @@ export function Hero({ name, title, bio, imageUrl, github, linkedin }: Props) {
     <section className="relative overflow-hidden pt-20 pb-12 sm:pb-16">
       <div className="pointer-events-none absolute inset-0 grid-dot-pattern opacity-[0.04]" />
 
-      <div className="pointer-events-none absolute inset-0 hidden lg:block">
+      <div className="pointer-events-none absolute inset-0 hidden xl:block">
         {techIcons.map((tech) => (
           <FadeIn key={tech.label} delay={Number.parseFloat(tech.delay)}>
             <div
-              className="animate-float absolute flex h-7 w-7 items-center justify-center rounded-lg border border-[var(--border)] bg-[var(--surface)] text-[10px] shadow-sm"
+              className="animate-float absolute flex h-8 w-8 items-center justify-center rounded-xl border border-[var(--border)] bg-[var(--surface)] text-xs shadow-sm"
               style={{ left: tech.x, top: tech.y }}
             >
               {tech.icon}

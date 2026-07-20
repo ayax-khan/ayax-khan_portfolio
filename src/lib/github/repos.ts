@@ -57,7 +57,14 @@ export async function getProjectsFromGithub(options?: {
   }
 
   const endpoint = isOrg ? `/orgs/${owner}/repos?per_page=100&sort=pushed&direction=desc` : `/users/${owner}/repos?per_page=100&sort=pushed&direction=desc`
-  const result = await githubFetchJson<GithubRepo[]>(endpoint, { owner, repo, kind, argsHash, etag: cached?.etag ?? null, ttlSeconds: REPOS_TTL_SECONDS })
+
+  let result: Awaited<ReturnType<typeof githubFetchJson<GithubRepo[]>>>
+  try {
+    result = await githubFetchJson<GithubRepo[]>(endpoint, { owner, repo, kind, argsHash, etag: cached?.etag ?? null, ttlSeconds: REPOS_TTL_SECONDS })
+  } catch {
+    // If auth fails (e.g. token doesn't have org access), retry without auth for public repos
+    result = await githubFetchJson<GithubRepo[]>(endpoint, { owner, repo, kind, argsHash, etag: null, ttlSeconds: REPOS_TTL_SECONDS, useAuth: false })
+  }
 
   if (result.status === 'not_modified' && cached) {
     await setGithubCache({

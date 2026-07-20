@@ -12,6 +12,7 @@ export type GithubFetchOptions = {
   argsHash: string
   etag?: string | null
   ttlSeconds: number
+  useAuth?: boolean
 }
 
 export type GithubFetchResult<T> =
@@ -37,11 +38,13 @@ export async function githubFetchJson<T>(
   try {
     const headers: Record<string, string> = {
       Accept: 'application/vnd.github+json',
-      Authorization: `Bearer ${env.GITHUB_TOKEN}`,
       'X-GitHub-Api-Version': '2022-11-28',
       'User-Agent': 'portfolio-site',
     }
 
+    if (opts.useAuth !== false) {
+      headers.Authorization = `Bearer ${env.GITHUB_TOKEN}`
+    }
     if (opts.etag) headers['If-None-Match'] = opts.etag
 
     const res = await fetch(`${GITHUB_API_BASE}${path}`, {

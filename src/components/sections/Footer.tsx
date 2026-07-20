@@ -1,6 +1,6 @@
 'use client'
 
-import { Heart } from 'lucide-react'
+import { Heart, Mail, ExternalLink } from 'lucide-react'
 import { GithubIcon, LinkedinIcon, TwitterIcon } from '@/components/ui/brand-icons'
 import Link from 'next/link'
 
@@ -17,6 +17,8 @@ const socialIconMap: Record<string, typeof GithubIcon> = {
 }
 
 export function Footer({ name, socials }: Props) {
+  const githubUrl = socials['GitHub'] ?? 'https://github.com/DEVSSDO'
+
   return (
     <footer className="border-t border-[var(--border)]">
       <div className="mx-auto max-w-5xl px-6 py-10">
@@ -26,7 +28,7 @@ export function Footer({ name, socials }: Props) {
               {name}
             </Link>
             <p className="text-xs text-[var(--muted-2)]">
-              AI Engineer & Full Stack Developer
+              Vision AI Engineer
             </p>
           </div>
 
@@ -50,10 +52,26 @@ export function Footer({ name, socials }: Props) {
           </div>
         </div>
 
-        <div className="mt-6 flex flex-col items-center gap-3 border-t border-[var(--border)] pt-6 sm:flex-row sm:justify-between">
-          <p className="text-xs text-[var(--muted-2)]">
-            &copy; {new Date().getFullYear()} {name}. All rights reserved.
-          </p>
+        <div className="mt-6 flex flex-col items-center gap-2 border-t border-[var(--border)] pt-6 sm:flex-row sm:justify-between">
+          <div className="flex flex-col items-center gap-1 sm:items-start">
+            <a
+              href={githubUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-1 text-xs text-[var(--muted-2)] transition-colors hover:text-[var(--fg)]"
+            >
+              <GithubIcon size={14} />
+              {githubUrl.replace('https://', '')}
+              <ExternalLink size={10} />
+            </a>
+            <a
+              href="mailto:deskmen112@gmail.com"
+              className="inline-flex items-center gap-1 text-xs text-[var(--muted-2)] transition-colors hover:text-[var(--fg)]"
+            >
+              <Mail size={14} />
+              deskmen112@gmail.com
+            </a>
+          </div>
           <p className="flex items-center gap-1 text-xs text-[var(--muted-2)]">
             Built with <Heart size={11} className="text-red-400" /> using Next.js
           </p>

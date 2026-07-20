@@ -37,7 +37,7 @@ export default async function AdminProjectsPage() {
       return []
     }
   })()
-  const projects = await getProjectsFromGithub({ includeHidden: true, includeForks: true, includeArchived: true, overrides })
+  const projects = await getProjectsFromGithub({ includeHidden: true, includeForks: true, includeArchived: true, overrides }).catch(() => [])
 
   const overrideMap = new Map(overrides.map((o) => [o.repoFullName, o]))
 

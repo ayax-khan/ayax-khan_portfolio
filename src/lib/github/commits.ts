@@ -39,10 +39,18 @@ export async function getRepoCommits(args: {
     return mapCommits(Array.isArray(cached.body) ? (cached.body as unknown as GithubCommit[]) : [])
   }
 
-  const result = await githubFetchJson<GithubCommit[]>(
-    `/repos/${owner}/${repo}/commits?per_page=${perPage}`,
-    { owner, repo, kind, argsHash, etag: cached?.etag ?? null, ttlSeconds: COMMITS_TTL_SECONDS },
-  )
+  let result: Awaited<ReturnType<typeof githubFetchJson<GithubCommit[]>>>
+  try {
+    result = await githubFetchJson<GithubCommit[]>(
+      `/repos/${owner}/${repo}/commits?per_page=${perPage}`,
+      { owner, repo, kind, argsHash, etag: cached?.etag ?? null, ttlSeconds: COMMITS_TTL_SECONDS },
+    )
+  } catch {
+    result = await githubFetchJson<GithubCommit[]>(
+      `/repos/${owner}/${repo}/commits?per_page=${perPage}`,
+      { owner, repo, kind, argsHash, etag: null, ttlSeconds: COMMITS_TTL_SECONDS, useAuth: false },
+    )
+  }
 
   if (result.status === 'not_modified' && cached) {
     await setGithubCache({
@@ -87,17 +95,16 @@ export async function getRepoCommitCount(repoName: string): Promise<number> {
     return (cached.body as number) ?? 0
   }
 
-  try {
+  async function fetchCount(useAuth: boolean): Promise<number> {
+    const headers: Record<string, string> = {
+      Accept: 'application/vnd.github+json',
+      'User-Agent': 'portfolio-site',
+    }
+    if (useAuth) headers.Authorization = `Bearer ${env.GITHUB_TOKEN}`
+
     const res = await fetch(
       `https://api.github.com/repos/${owner}/${repo}/commits?per_page=1&page=1`,
-      {
-        headers: {
-          Accept: 'application/vnd.github+json',
-          Authorization: `Bearer ${env.GITHUB_TOKEN}`,
-          'User-Agent': 'portfolio-site',
-        },
-        cache: 'no-store',
-      },
+      { headers, cache: 'no-store' },
     )
 
     let count = 0
@@ -112,10 +119,20 @@ export async function getRepoCommitCount(repoName: string): Promise<number> {
       count = body.length
     }
 
+    return count
+  }
+
+  try {
+    const count = await fetchCount(true)
     const expiresAt = new Date(Date.now() + COMMITS_TTL_SECONDS * 1000)
     await setGithubCache({ owner, repo, kind, argsHash, etag: null, body: count, expiresAt })
     return count
   } catch {
-    return 0
+    try {
+      const count = await fetchCount(false)
+      return count
+    } catch {
+      return 0
+    }
   }
 }

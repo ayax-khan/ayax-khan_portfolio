@@ -58,6 +58,17 @@ export async function getRepoReadme(repoName: string): Promise<string | null> {
     await setGithubCache({ owner, repo, kind, argsHash, etag: result.etag, body: content, expiresAt: result.expiresAt })
     return content
   } catch {
-    return null
+    // If auth fails, retry without auth for public repos
+    try {
+      const result = await githubFetchJson<GithubReadmeResponse>(
+        `/repos/${owner}/${repo}/readme`,
+        { owner, repo, kind, argsHash, etag: null, ttlSeconds: README_TTL_SECONDS, useAuth: false },
+      )
+      if (result.status !== 'fresh') return null
+      const content = Buffer.from(result.data.content, 'base64').toString('utf-8')
+      return content
+    } catch {
+      return null
+    }
   }
 }

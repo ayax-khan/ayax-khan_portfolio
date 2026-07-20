@@ -17,10 +17,14 @@ type GithubReadmeResponse = {
   download_url: string
 }
 
+function githubOwner(): string {
+  return process.env.GITHUB_ORG || env.GITHUB_USERNAME
+}
+
 export async function getRepoReadme(repoName: string): Promise<string | null> {
   if (!process.env.GITHUB_USERNAME || !process.env.GITHUB_TOKEN) return null
 
-  const owner = env.GITHUB_USERNAME
+  const owner = githubOwner()
   const repo = repoName
   const kind = 'readme'
   const argsHash = argsHashFrom({})

@@ -5,6 +5,10 @@ import { githubFetchJson } from '@/lib/github/client'
 import { getGithubCache, isFresh, setGithubCache } from '@/lib/github/cache'
 import type { GithubCommit } from '@/lib/github/types'
 
+function githubOwner(): string {
+  return process.env.GITHUB_ORG || env.GITHUB_USERNAME
+}
+
 export type CommitItem = {
   sha: string
   message: string
@@ -24,7 +28,7 @@ export async function getRepoCommits(args: {
 }): Promise<CommitItem[]> {
   if (!process.env.GITHUB_USERNAME || !process.env.GITHUB_TOKEN) return []
 
-  const owner = env.GITHUB_USERNAME
+  const owner = githubOwner()
   const repo = args.repoName
   const kind = 'commits'
   const perPage = args.perPage ?? 30
@@ -73,7 +77,7 @@ function mapCommits(commits: GithubCommit[]): CommitItem[] {
 export async function getRepoCommitCount(repoName: string): Promise<number> {
   if (!process.env.GITHUB_USERNAME || !process.env.GITHUB_TOKEN) return 0
 
-  const owner = env.GITHUB_USERNAME
+  const owner = githubOwner()
   const repo = repoName
   const kind = 'commit-count'
   const argsHash = argsHashFrom({})

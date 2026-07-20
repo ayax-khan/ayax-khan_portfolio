@@ -6,6 +6,10 @@ import { getGithubCache, isFresh, setGithubCache } from '@/lib/github/cache'
 import type { GithubRepo } from '@/lib/github/types'
 import { prisma } from '@/lib/db'
 
+function githubOwner(): string {
+  return env.GITHUB_ORG ?? env.GITHUB_USERNAME
+}
+
 export type PortfolioProject = {
   slug: string
   name: string
@@ -41,20 +45,19 @@ export async function getProjectsFromGithub(options?: {
   // Allow `next build` without env vars; production requires them.
   if (!process.env.GITHUB_USERNAME || !process.env.GITHUB_TOKEN) return []
 
-  const owner = env.GITHUB_USERNAME
-  const repo = '_' // placeholder (we cache repo list under a single bucket)
+  const owner = githubOwner()
+  const isOrg = !!env.GITHUB_ORG
+  const repo = '_'
   const kind = 'repos'
-  const argsHash = argsHashFrom({ type: 'user_repos', owner })
+  const argsHash = argsHashFrom({ type: isOrg ? 'org_repos' : 'user_repos', owner })
 
   const cached = await getGithubCache({ owner, repo, kind, argsHash })
   if (cached && isFresh(cached.expiresAt)) {
     return mapReposToProjects(Array.isArray(cached.body) ? (cached.body as unknown as GithubRepo[]) : [], options)
   }
 
-  const result = await githubFetchJson<GithubRepo[]>(
-    `/users/${owner}/repos?per_page=100&sort=pushed&direction=desc`,
-    { owner, repo, kind, argsHash, etag: cached?.etag ?? null, ttlSeconds: REPOS_TTL_SECONDS },
-  )
+  const endpoint = isOrg ? `/orgs/${owner}/repos?per_page=100&sort=pushed&direction=desc` : `/users/${owner}/repos?per_page=100&sort=pushed&direction=desc`
+  const result = await githubFetchJson<GithubRepo[]>(endpoint, { owner, repo, kind, argsHash, etag: cached?.etag ?? null, ttlSeconds: REPOS_TTL_SECONDS })
 
   if (result.status === 'not_modified' && cached) {
     await setGithubCache({

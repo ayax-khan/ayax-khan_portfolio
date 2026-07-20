@@ -97,7 +97,7 @@ export async function resetProjectOverrideFromForm(formData: FormData) {
 }
 
 export async function syncGithubNow() {
-  const owner = env.GITHUB_USERNAME
+  const owner = process.env.GITHUB_ORG || env.GITHUB_USERNAME
   // Clear cached repo list and any commit caches for this owner.
   await prisma.githubApiCache.deleteMany({
     where: {

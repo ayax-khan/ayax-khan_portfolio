@@ -59,6 +59,10 @@ export const env = {
   get GITHUB_USERNAME() {
     return z.string().min(1).parse(required('GITHUB_USERNAME'))
   },
+  get GITHUB_ORG() {
+    const v = optional('GITHUB_ORG')
+    return v ? z.string().min(1).parse(v) : undefined
+  },
   // Safe default to allow build without env.
   get SITE_URL() {
     return z.string().url().parse(process.env.SITE_URL ?? 'http://localhost:3000')

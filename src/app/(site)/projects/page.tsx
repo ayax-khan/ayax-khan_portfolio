@@ -1,13 +1,14 @@
 import { Card } from '@/components/ui/Card'
 import { Badge } from '@/components/ui/Badge'
-import { ExternalButton } from '@/components/ui/ExternalButton'
-import { SectionHeading } from '@/components/ui/SectionHeading'
 import { getProjectsFromGithub } from '@/lib/github/repos'
 import { ExternalLink } from 'lucide-react'
 import { GithubIcon } from '@/components/ui/brand-icons'
 import Link from 'next/link'
+import type { Metadata } from 'next'
 
-export const metadata = {
+export const dynamic = 'force-dynamic'
+
+export const metadata: Metadata = {
   title: 'Projects',
   description: 'Featured projects synced from GitHub with portfolio-specific details.',
 }
@@ -23,7 +24,7 @@ export default async function ProjectsPage({
   const allProjects = await getProjectsFromGithub().catch(() => [])
   const projects = allProjects.filter((p) => p.featured)
 
-  const allTags = Array.from(new Set(projects.flatMap((p) => p.tags))).sort()
+  const allTags = Array.from(new Set(projects.flatMap((p) => p.tags ?? []))).sort()
   const filteredProjects = selectedTag ? projects.filter((p) => p.tags.includes(selectedTag)) : projects
 
   return (
@@ -38,6 +39,15 @@ export default async function ProjectsPage({
         <p className="mt-3 text-base leading-relaxed text-[var(--muted)]">
           Production-ready applications, AI systems, and tools I have built.
         </p>
+        <a
+          href="https://github.com/orgs/DEVSSDO/repositories"
+          target="_blank"
+          rel="noreferrer"
+          className="mt-4 inline-flex items-center gap-2 rounded-xl border border-[var(--border)] bg-[var(--surface)] px-4 py-2 text-sm font-medium text-[var(--fg)] transition-all hover:bg-[var(--surface-2)] hover:shadow-sm"
+        >
+          <GithubIcon size={16} />
+          Browse all repositories on GitHub
+        </a>
       </header>
 
       {allTags.length > 0 ? (

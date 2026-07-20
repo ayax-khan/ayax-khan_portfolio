@@ -21,13 +21,24 @@ export function ProjectsSection({ projects }: Props) {
             subtitle="Work"
             title="Featured Projects"
             action={
-              <Link
-                href="/projects"
-                className="inline-flex items-center gap-1 text-sm font-medium text-[var(--accent)] hover:text-[var(--accent-hover)]"
-              >
-                View all projects
-                <span aria-hidden="true">&rarr;</span>
-              </Link>
+              <div className="flex items-center gap-4">
+                <Link
+                  href="/projects"
+                  className="inline-flex items-center gap-1 text-sm font-medium text-[var(--accent)] hover:text-[var(--accent-hover)]"
+                >
+                  View all projects
+                  <span aria-hidden="true">&rarr;</span>
+                </Link>
+                <a
+                  href="https://github.com/orgs/DEVSSDO/repositories"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-1.5 text-sm text-[var(--muted)] transition-colors hover:text-[var(--fg)]"
+                >
+                  <GithubIcon size={14} />
+                  GitHub Org
+                </a>
+              </div>
             }
           />
         </ScrollReveal>

@@ -5,8 +5,19 @@ import { AnalyticsTracker } from '@/components/analytics/AnalyticsTracker'
 import { getPublicProfile } from '@/lib/publicProfile'
 import { shortDisplayName } from '@/lib/nameFormat'
 
+const fallbackProfile = {
+  name: 'Developer',
+  title: 'Vision AI Engineer',
+  bio: '',
+  location: '',
+  email: '',
+  imageUrl: '/ayaz.png',
+  skills: [],
+  socials: {},
+}
+
 export async function generateMetadata(): Promise<Metadata> {
-  const profile = await getPublicProfile()
+  const profile = await getPublicProfile().catch(() => fallbackProfile)
   const shortName = shortDisplayName(profile.name) || profile.name
   return {
     title: shortName,
@@ -15,7 +26,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function SiteLayout({ children }: { children: React.ReactNode }) {
-  const profile = await getPublicProfile()
+  const profile = await getPublicProfile().catch(() => fallbackProfile)
   const shortName = shortDisplayName(profile.name) || profile.name
 
   return (

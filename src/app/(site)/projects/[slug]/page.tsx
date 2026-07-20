@@ -24,7 +24,7 @@ export default async function ProjectDetailPage({
   params: Promise<{ slug: string }>
 }) {
   const { slug } = await params
-  const projects = await getProjectsFromGithub()
+  const projects = await getProjectsFromGithub().catch(() => [])
   const project = projects.find((p) => p.slug === slug)
   if (!project) return notFound()
 

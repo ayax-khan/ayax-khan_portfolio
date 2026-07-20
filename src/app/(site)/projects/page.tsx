@@ -18,16 +18,17 @@ export default async function ProjectsPage({
 }: {
   searchParams: Promise<Record<string, string | string[] | undefined>>
 }) {
-  const sp = await searchParams
-  const selectedTag = String(sp.tag ?? '').trim()
+  try {
+    const sp = await searchParams
+    const selectedTag = String(sp.tag ?? '').trim()
 
-  const allProjects = await getProjectsFromGithub().catch(() => [])
-  const projects = allProjects.filter((p) => p.featured)
+    const allProjects = await getProjectsFromGithub().catch(() => [])
+    const projects = allProjects.filter((p) => p.featured)
 
-  const allTags = Array.from(new Set(projects.flatMap((p) => p.tags ?? []))).sort()
-  const filteredProjects = selectedTag ? projects.filter((p) => p.tags.includes(selectedTag)) : projects
+    const allTags = Array.from(new Set(projects.flatMap((p) => p.tags ?? []))).sort()
+    const filteredProjects = selectedTag ? projects.filter((p) => p.tags.includes(selectedTag)) : projects
 
-  return (
+    return (
     <div className="mx-auto max-w-5xl px-6 pt-28 pb-20">
       <header className="max-w-3xl">
         <p className="mb-3 inline-flex items-center rounded-full border border-[var(--accent)]/20 bg-[var(--accent-soft)] px-2.5 py-0.5 text-[11px] font-medium text-[var(--accent)]">
@@ -153,4 +154,15 @@ export default async function ProjectsPage({
       )}
     </div>
   )
+  } catch (err) {
+    console.error('Projects page error:', err)
+    return (
+      <div className="mx-auto max-w-5xl px-6 pt-28 pb-20">
+        <header className="max-w-3xl">
+          <h1 className="text-3xl font-bold tracking-tight text-[var(--fg)] sm:text-4xl">Projects</h1>
+          <p className="mt-3 text-base leading-relaxed text-[var(--muted)]">Something went wrong loading projects. Please try again later.</p>
+        </header>
+      </div>
+    )
+  }
 }

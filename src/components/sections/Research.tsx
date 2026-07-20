@@ -39,17 +39,17 @@ export function Research() {
           />
         </ScrollReveal>
 
-        <StaggerContainer className="mt-8 grid gap-3">
+        <StaggerContainer className="mt-12 grid gap-6">
           {researchItems.map((item) => {
             const Icon = item.icon
             return (
               <StaggerItem key={item.title}>
-                <div className="group flex flex-col gap-3 rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--surface)] p-4 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md sm:p-5">
+                <div className="group flex flex-col gap-4 rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--surface)] p-5 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md sm:p-6">
                   <div className="flex items-center gap-4">
                     <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-[var(--accent-soft)] text-[var(--accent)]">
                       <Icon size={20} />
                     </div>
-                    <h3 className="text-sm font-semibold text-[var(--fg)]">{item.title}</h3>
+                    <h3 className="text-base font-semibold text-[var(--fg)]">{item.title}</h3>
                   </div>
                   <p className="text-sm leading-relaxed text-[var(--muted)]">{item.description}</p>
                 </div>

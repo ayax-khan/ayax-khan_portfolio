@@ -41,7 +41,7 @@ export function ContactSection() {
                   </div>
                   <div>
                     <p className="text-sm font-medium text-[var(--fg)]">Email</p>
-                    <p className="text-xs text-[var(--muted)]">hello@ayaz.dev</p>
+                    <p className="text-xs text-[var(--muted)]">deskmen112@gmail.com</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-3">

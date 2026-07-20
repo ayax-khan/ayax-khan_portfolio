@@ -32,7 +32,7 @@ export default async function ContactPage() {
               </div>
               <div>
                 <p className="text-sm font-medium text-[var(--fg)]">Email</p>
-                <p className="text-xs text-[var(--muted)]">{profile.email || 'hello@ayaz.dev'}</p>
+                <p className="text-xs text-[var(--muted)]">{profile.email || 'deskmen112@gmail.com'}</p>
               </div>
             </div>
             <div className="flex items-center gap-3">

@@ -1,6 +1,6 @@
 'use client'
 
-import { Heart, Mail, ExternalLink } from 'lucide-react'
+import { Mail, ExternalLink } from 'lucide-react'
 import { GithubIcon, LinkedinIcon, TwitterIcon } from '@/components/ui/brand-icons'
 import Link from 'next/link'
 
@@ -72,9 +72,7 @@ export function Footer({ name, socials }: Props) {
               deskmen112@gmail.com
             </a>
           </div>
-          <p className="flex items-center gap-1 text-xs text-[var(--muted-2)]">
-            Built with <Heart size={11} className="text-red-400" /> using Next.js
-          </p>
+          <div />
         </div>
       </div>
     </footer>

@@ -22,10 +22,19 @@ export const metadata = {
 
 export default async function HomePage() {
   const [projects, posts, profile, experiences] = await Promise.all([
-    getProjectsFromGithub(),
-    listPublishedPosts(),
-    getPublicProfile(),
-    getExperienceEntries(),
+    getProjectsFromGithub().catch(() => []),
+    listPublishedPosts().catch(() => []),
+    getPublicProfile().catch(() => ({
+      name: 'Developer',
+      title: 'Vision AI Engineer',
+      bio: '',
+      location: '',
+      email: '',
+      imageUrl: '/ayaz.png',
+      skills: [],
+      socials: {},
+    })),
+    getExperienceEntries().catch(() => []),
   ])
 
   const featured = projects.filter((p) => p.featured)
